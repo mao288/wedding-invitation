@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domi & Luis — 03 · 10 · 2026</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='mg' cx='38%25' cy='38%25' r='65%25'%3E%3Cstop offset='0%25' stop-color='%23EDD4A0'/%3E%3Cstop offset='100%25' stop-color='%23C49030'/%3E%3C/radialGradient%3E%3Cmask id='mm'%3E%3Ccircle cx='16' cy='16' r='13' fill='white'/%3E%3Ccircle cx='22' cy='15' r='12' fill='black'/%3E%3C/mask%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='13' fill='url(%23mg)' mask='url(%23mm)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7EDD8; --linen:#F0E2C0; --warm:#EDD4A0;
+  --terra:#C45A1A; --sienna:#8B3210; --burg:#4A1A08;
+  --sage:#6B7A42;  --forest:#243D1E; --gold:#C49030;
+  --dark:#0E0906;  --dark2:#1A0E06; --dark3:#0C1408;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}  /* prevents any horizontal bleed */
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;font-weight:300;color:var(--burg);background:var(--dark)}
+body::before{content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:180px;pointer-events:none;z-index:998;opacity:.6}
+
+/* ── CANVAS (always behind everything) ── */
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* ── WAVES ── */
+.wave{display:block;width:100%;overflow:hidden;line-height:0;margin-top:-2px;position:relative;z-index:3}
+.wave svg{display:block;width:100%}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;transition:background .4s,box-shadow .4s}
+nav.scrolled{background:rgba(10,6,3,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(196,144,48,.15)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--gold);opacity:0;transition:opacity .4s}
+nav.scrolled .nav-logo{opacity:1}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:.62rem;font-weight:400;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(247,237,216,.55);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+@media(max-width:680px){.nav-links{display:none}nav{padding:16px 20px}}
+
+/* ── SHARED ── */
+section{position:relative;z-index:2}  /* overflow:hidden removido — cortaba el scroll de las strips */
+.si{max-width:760px;margin:0 auto;text-align:center;padding:80px 24px 20px;position:relative;z-index:3}
+.si.pb{padding-bottom:80px}
+
+/* ── HERO TEXT — high contrast ── */
+.hd{
+  margin-top:26px;font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,3vw,1.35rem);font-weight:300;letter-spacing:.25em;
+  color:#F2CA55;  /* brighter gold */
+  text-shadow:0 0 20px rgba(196,144,48,.6), 0 2px 8px rgba(0,0,0,.8);
+  opacity:0;animation:fadeUp 1s ease forwards 1.1s;
+}
+.hs{
+  margin-top:8px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:#D8C8A0;  /* warm cream, was 35% opacity */
+  text-shadow:0 1px 6px rgba(0,0,0,.9);
+  opacity:0;animation:fadeUp 1s ease forwards 1.3s;
+}
+
+/* typography — dark sections */
+.lbl{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(196,144,48,.6);margin-bottom:12px}
+.ttl{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin-bottom:20px;color:var(--cream)}
+.bod{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.12rem;line-height:1.78;color:rgba(247,237,216,.6);max-width:480px;margin:0 auto 36px}
+
+/* typography — light sections */
+.lbl.lt{color:var(--sage)}
+.ttl.lt{color:var(--burg)}
+.bod.lt{color:var(--sienna)}
+.bod.plain{font-style:normal;font-family:'Jost',sans-serif;font-size:.84rem}
+
+/* gold divider */
+.gd{display:flex;align-items:center;gap:12px;width:fit-content;margin:0 auto 36px}
+.gl{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--gold))}
+.gl.r{background:linear-gradient(to left,transparent,var(--gold))}
+.gdd{width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.gdm{width:7px;height:7px;border-radius:50%;background:var(--terra)}
+.gd.dim .gl{background:linear-gradient(to right,transparent,rgba(196,144,48,.4))}
+.gd.dim .gl.r{background:linear-gradient(to left,transparent,rgba(196,144,48,.4))}
+
+/* ── CONSTELLATION LAYERS ── */
+/* Dark section stars: bright gold/terra */
+.cl{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.cl svg{position:absolute;overflow:visible}
+/* Light section stars: dark terracota/sage — must contrast against cream */
+.cl-lt svg{position:absolute;overflow:visible}
+.cl circle,.cl-lt circle,.cl polygon,.cl-lt polygon{transform-box:fill-box;transform-origin:center}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+/* Dark-bg twinkle: goes nearly invisible to full bright */
+@keyframes tw-a{0%,100%{opacity:.1;transform:scale(.5)}50%{opacity:1;transform:scale(1.6)}}
+@keyframes tw-b{0%,100%{opacity:.07;transform:scale(.4)}50%{opacity:1;transform:scale(1.7)}}
+@keyframes tw-c{0%,100%{opacity:.05}50%{opacity:.9}}
+/* Light-bg twinkle: stays visible but dims/brightens against cream */
+@keyframes tw-lt-a{0%,100%{opacity:.12;transform:scale(.6)}50%{opacity:.65;transform:scale(1.3)}}
+@keyframes tw-lt-b{0%,100%{opacity:.08;transform:scale(.5)}50%{opacity:.5;transform:scale(1.4)}}
+@keyframes tw-lt-c{0%,100%{opacity:.06}50%{opacity:.45}}
+@keyframes glow{0%,100%{opacity:.08;transform:scale(.7)}50%{opacity:.42;transform:scale(1.4)}}
+@keyframes float-m{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes spin-s{0%{transform:rotate(0deg) scale(1);opacity:.85}50%{transform:rotate(20deg) scale(1.3);opacity:1}100%{transform:rotate(0deg) scale(1);opacity:.85}}
+@keyframes sp{0%,100%{opacity:.25;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ── POLAROIDS ── */
+.pol{
+  position:absolute;pointer-events:none;z-index:4;
+  filter:drop-shadow(0 8px 28px rgba(0,0,0,.4));
+  transition:filter .3s;
+}
+.pol .pf{
+  background:#F8F2E2;
+  padding:9px 9px 30px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.07);
+}
+.pol .pf img{display:block;width:100%;height:auto;object-fit:cover;aspect-ratio:1/1}
+.pol .pcap{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.68rem;color:rgba(74,26,8,.55);
+  text-align:center;margin-top:8px;letter-spacing:.06em;
+  white-space:nowrap;overflow:hidden;
+}
+/* Proposal: special larger frame with golden glow */
+.pol.proposal{filter:drop-shadow(0 6px 24px rgba(196,144,48,.45)) drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+.pol.proposal .pf{
+  background:#FDF7EC;
+  padding:11px 11px 42px;
+  box-shadow:inset 0 0 0 1px rgba(196,144,48,.25),0 0 0 2px rgba(196,144,48,.12);
+}
+.pol.proposal .pf img{aspect-ratio:3/4}
+.pol.proposal .pcap{font-size:.78rem;color:var(--terra);letter-spacing:.08em}
+@media(max-width:900px){.pol{display:none}}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .85s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.5s}
+
+/* ── TEXT COLOR FIXES dark sections ── */
+.lbl{color:rgba(196,144,48,.85)}         /* section labels: was .6 */
+.tln{color:rgba(247,237,216,.85)}        /* timeline notes: was .38 */
+.bod{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.12rem;line-height:1.78;color:#E8D8B8;max-width:480px;margin:0 auto 36px}
+.bod.lt{color:var(--sienna)}
+.bod.plain{font-style:normal;font-family:'Jost',sans-serif;font-size:.84rem}
+.fp p{color:#C8B890}                     /* rsvp placeholder text */
+.fp code{color:#C49030;opacity:.85}
+/* Scroll hint label in hero */
+.scroll-hint span{color:rgba(247,237,216,.55)}
+
+/* ── MOBILE PHOTO STRIP ── */
+.photo-strip{
+  position:relative;z-index:5;
+  width:100%;max-width:100vw;
+  padding:16px 0 28px;
+  overflow:hidden;  /* clip outer */
+}
+.strip-inner{
+  display:flex;
+  gap:14px;
+  padding:10px 24px 14px;
+  overflow-x:scroll;  /* scroll not auto — more reliable on iOS */
+  overflow-y:visible;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
+  scrollbar-width:none;
+  width:100%;
+  align-items:center;
+}
+.strip-inner::-webkit-scrollbar{display:none}
+.pol-s{
+  flex:0 0 auto;
+  scroll-snap-align:center;
+  filter:drop-shadow(0 5px 18px rgba(0,0,0,.38));
+}
+.pol-s .pf{background:#F8F2E2;padding:8px 8px 30px}
+.pol-s .pf img{display:block;width:140px;height:140px;object-fit:cover}
+.pol-s .pcap{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.65rem;color:rgba(74,26,8,.55);
+  text-align:center;margin-top:6px;letter-spacing:.04em;
+}
+/* Proposal special */
+.pol-s.proposal-s .pf{
+  background:#FDF7EC;padding:10px 10px 40px;
+  box-shadow:0 0 0 2px rgba(196,144,48,.22);
+}
+.pol-s.proposal-s .pf img{width:160px;height:200px}
+.pol-s.proposal-s .pcap{font-size:.74rem;color:var(--terra);letter-spacing:.06em}
+/* Desktop: hide strip, show floating polaroids */
+@media(min-width:901px){.photo-strip{display:none}}
+/* Mobile: hide floating polaroids */
+@media(max-width:900px){.pol{display:none}}
+
+/* ── HERO (dark) ── */
+#hero{min-height:100vh;background:transparent;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 24px 20px;position:relative}
+#hero::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 40%,rgba(10,6,3,.05) 0%,rgba(10,6,3,.55) 100%);
+  pointer-events:none;z-index:1}
+.hl{position:absolute;top:0;left:0;right:0;height:70px;pointer-events:none;z-index:4}
+.hl svg{width:100%;height:100%}
+.hero-el{position:relative;z-index:4}
+.hp{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(107,122,66,.85);
+  margin-bottom:26px;opacity:0;animation:fadeUp 1s ease forwards .4s}
+.hn{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(4.5rem,14vw,8rem);
+  line-height:.9;color:var(--cream);opacity:0;animation:fadeUp 1.2s ease forwards .7s}
+.hn .amp{display:block;font-style:italic;color:var(--terra);font-size:1.1em;line-height:1;margin:-6px 0}
+.hc{margin:34px auto 0;opacity:0;animation:fadeUp 1.2s ease forwards 1.5s}
+.hc circle,.hc polygon{transform-box:fill-box;transform-origin:center}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeUp 1s ease forwards 2.2s;z-index:4}
+.scroll-hint span{font-size:.57rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(247,237,216,.28)}
+.sha{width:1px;height:38px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sp 1.8s ease-in-out infinite}
+
+/* ── CELEBRACIÓN (cream) ── */
+#celebracion{background:linear-gradient(170deg,#F7EDD8 0%,#F0E2C0 50%,#EDD4A0 100%)}
+.ec{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 auto 36px;max-width:600px}
+@media(max-width:520px){.ec{grid-template-columns:1fr}}
+.ecard{background:rgba(255,255,255,.45);border:1px solid rgba(196,90,26,.22);padding:30px 20px;text-align:center;position:relative}
+.ecard::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2px;background:var(--terra)}
+.ei{font-size:1.3rem;margin-bottom:10px;display:block}
+.et{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--sage);margin-bottom:8px}
+.etime{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--terra);line-height:1;margin-bottom:4px}
+.eap{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
+.vi{margin:0 auto 36px;max-width:400px}
+.vn{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:600;color:var(--forest);margin-bottom:6px}
+.va{font-size:.78rem;line-height:1.7;color:var(--sienna);margin-bottom:24px}
+.mb{display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border:1px solid var(--forest);
+  color:var(--forest);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  text-decoration:none;transition:background .3s,color .3s}
+.mb:hover{background:var(--forest);color:var(--cream)}
+.me{max-width:680px;margin:0 auto;border:1px solid rgba(196,90,26,.2);overflow:hidden;line-height:0;border-radius:12px}
+.me iframe{width:100%;height:320px;border:none;display:block}
+
+/* ── ITINERARIO (dark) ── */
+#itinerario{background:linear-gradient(180deg,#0E0906 0%,#0C1408 100%)}
+.tl{position:relative;max-width:420px;margin:0 auto;text-align:left}
+.tl::before{content:'';position:absolute;left:19px;top:6px;bottom:6px;width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(196,144,48,.28) 10%,rgba(196,144,48,.28) 90%,transparent)}
+.tli{display:flex;gap:20px;margin-bottom:34px}
+.tli:last-child{margin-bottom:0}
+.tld{flex-shrink:0;width:39px;height:39px;border-radius:50%;border:1px solid rgba(196,144,48,.35);
+  background:rgba(10,6,3,.85);display:flex;align-items:center;justify-content:center;font-size:.95rem;position:relative;z-index:1}
+.tlc{padding-top:6px}
+.tlt{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:2px}
+.tle{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);margin-bottom:2px}
+.tln{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:rgba(247,237,216,.38)}
+
+/* ── VESTIMENTA (warm) ── */
+#vestimenta{background:linear-gradient(170deg,#EDD4A0 0%,#F0E2C0 100%)}
+.db{display:inline-block;border:1px solid var(--terra);padding:13px 34px;margin-bottom:28px;
+  font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:300;color:var(--burg);letter-spacing:.08em}
+.pr{display:flex;justify-content:center;gap:10px;margin-bottom:18px}
+.ps{width:46px;height:70px;border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.pn{font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sage)}
+
+/* ── ALOJAMIENTO / REGALOS ── */
+#alojamiento{background:#F7EDD8}
+#regalos{background:linear-gradient(170deg,#EDD4A0 0%,#F0E2C0 100%)}
+.pc{display:inline-block;border:1px dashed rgba(196,90,26,.3);padding:32px 44px;max-width:400px;width:100%}
+.pc p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--sage);margin-bottom:8px}
+.pc small{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(107,122,66,.45)}
+
+/* ── RSVP (dark) ── */
+#rsvp{background:linear-gradient(160deg,#0E0906 0%,#1A0E06 50%,#0C1408 100%)}
+.rdl{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--gold);margin-bottom:28px}
+.fc{max-width:640px;margin:0 auto;border:1px solid rgba(196,144,48,.18);background:rgba(247,237,216,.03);overflow:hidden}
+.fc iframe{width:100%;height:620px;border:none;display:block}
+.fp{padding:56px 32px;text-align:center}
+.fp p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:rgba(247,237,216,.42);margin-bottom:10px}
+.fp code{font-family:monospace;font-size:.7rem;color:var(--gold);opacity:.55;display:block;margin-top:14px}
+
+/* ── FOOTER ── */
+footer{background:var(--dark);padding:52px 24px 40px;text-align:center;position:relative;z-index:2;overflow:hidden}
+.fn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.1rem;font-weight:300;color:var(--gold);margin-bottom:8px;position:relative;z-index:4}
+.fd{font-size:.63rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(196,144,48,.38);margin-bottom:28px;position:relative;z-index:4}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav id="nav">
+  <div class="nav-logo">D & L</div>
+  <ul class="nav-links">
+    <li><a href="#celebracion">Celebración</a></li>
+    <li><a href="#itinerario">Itinerario</a></li>
+    <li><a href="#vestimenta">Vestimenta</a></li>
+    <li><a href="#alojamiento">Alojamiento</a></li>
+    <li><a href="#rsvp">Confirmar</a></li>
+  </ul>
+</nav>
+
+<!-- ════ HERO (DARK) ════ -->
+<section id="hero">
+  <!-- Polaroids: left and right edges -->
+  <div class="pol" style="width:148px;left:3%;top:22%;transform:rotate(-6deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0045_lzxm0x.jpg" alt="" loading="lazy"><div class="pcap">Domi & Luis</div></div>
+  </div>
+  <div class="pol" style="width:152px;right:3%;top:30%;transform:rotate(5deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0048_fq11jm.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="hl">
+    <svg viewBox="0 0 900 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="bH" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFD580" stop-opacity=".9"/><stop offset="100%" stop-color="#FFA020" stop-opacity="0"/></radialGradient></defs>
+      <path d="M0,20 Q75,32 150,20 Q225,8 300,20 Q375,32 450,20 Q525,8 600,20 Q675,32 750,20 Q825,8 900,20" fill="none" stroke="#8B3210" stroke-width=".8" opacity=".38"/>
+      <g opacity=".9">
+        <line x1="150" y1="20" x2="150" y2="34" stroke="#8B3210" stroke-width=".6" opacity=".45"/><ellipse cx="150" cy="40" rx="5" ry="7" fill="#C4622D" opacity=".75"/><ellipse cx="150" cy="37" rx="8" ry="10" fill="url(#bH)" opacity=".6"/>
+        <line x1="300" y1="20" x2="300" y2="34" stroke="#8B3210" stroke-width=".6" opacity=".45"/><ellipse cx="300" cy="40" rx="5" ry="7" fill="#6B7A42" opacity=".75"/><ellipse cx="300" cy="37" rx="8" ry="10" fill="url(#bH)" opacity=".6"/>
+        <line x1="450" y1="20" x2="450" y2="34" stroke="#8B3210" stroke-width=".6" opacity=".45"/><ellipse cx="450" cy="40" rx="5" ry="7" fill="#C4622D" opacity=".75"/><ellipse cx="450" cy="37" rx="8" ry="10" fill="url(#bH)" opacity=".65"/>
+        <line x1="600" y1="20" x2="600" y2="34" stroke="#8B3210" stroke-width=".6" opacity=".45"/><ellipse cx="600" cy="40" rx="5" ry="7" fill="#243D1E" opacity=".75"/><ellipse cx="600" cy="37" rx="8" ry="10" fill="url(#bH)" opacity=".6"/>
+        <line x1="750" y1="20" x2="750" y2="34" stroke="#8B3210" stroke-width=".6" opacity=".45"/><ellipse cx="750" cy="40" rx="5" ry="7" fill="#C4622D" opacity=".75"/><ellipse cx="750" cy="37" rx="8" ry="10" fill="url(#bH)" opacity=".6"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Moon + dark-section constellation overlays -->
+  <div class="cl" style="z-index:3">
+    <svg width="240" height="240" style="right:3%;top:8%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mH" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#EDD4A0" stop-opacity=".95"/><stop offset="55%" stop-color="#C49030" stop-opacity=".6"/><stop offset="100%" stop-color="#5C2010" stop-opacity=".1"/></radialGradient>
+        <mask id="cMH"><circle cx="120" cy="120" r="68" fill="white"/><circle cx="150" cy="116" r="62" fill="black"/></mask>
+      </defs>
+      <g style="animation:float-m 7s ease-in-out infinite">
+        <circle cx="120" cy="120" r="100" fill="rgba(196,144,48,.04)"/>
+        <circle cx="120" cy="120" r="80"  fill="rgba(196,144,48,.06)"/>
+        <circle cx="120" cy="120" r="68"  fill="url(#mH)" mask="url(#cMH)"/>
+        <circle cx="120" cy="120" r="68"  fill="none" stroke="rgba(196,144,48,.38)" stroke-width="1" mask="url(#cMH)"/>
+        <circle cx="48"  cy="58"  r="1.4" fill="#C49030" style="animation:tw-a 1.8s ease-in-out infinite .3s"/>
+        <circle cx="198" cy="72"  r="1.1" fill="#C49030" style="animation:tw-b 2.1s ease-in-out infinite .8s"/>
+        <circle cx="52"  cy="178" r="1"   fill="#C45A1A" style="animation:tw-a 1.6s ease-in-out infinite 1.4s"/>
+        <circle cx="192" cy="168" r="1.2" fill="#C49030" style="animation:tw-b 2.3s ease-in-out infinite .6s"/>
+      </g>
+    </svg>
+    <!-- Constellation top-left -->
+    <svg width="180" height="160" style="left:2%;top:15%" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#C49030" stroke-width=".8" opacity=".3" fill="none">
+        <line x1="20"  y1="30"  x2="60"  y2="55"/>
+        <line x1="60"  y1="55"  x2="110" y2="40"/>
+        <line x1="60"  y1="55"  x2="55"  y2="105"/>
+        <line x1="110" y1="40"  x2="155" y2="65"/>
+      </g>
+      <circle cx="20"  cy="30"  r="1.6" fill="#C49030" style="animation:tw-b 2s ease-in-out infinite .5s"/>
+      <circle cx="60"  cy="55"  r="2.5" fill="#C49030" style="animation:tw-a 1.7s ease-in-out infinite 1s"/>
+      <circle cx="110" cy="40"  r="1.8" fill="#C45A1A" style="animation:tw-b 2.2s ease-in-out infinite .3s"/>
+      <circle cx="55"  cy="105" r="1.5" fill="#6B7A42" style="animation:tw-a 2.4s ease-in-out infinite 1.6s"/>
+      <circle cx="155" cy="65"  r="1.6" fill="#C49030" style="animation:tw-b 1.9s ease-in-out infinite .8s"/>
+    </svg>
+  </div>
+
+  <div class="hero-el">
+    <p class="hp">03 · Octubre · 2026 &nbsp;·&nbsp; Sábado</p>
+    <h1 class="hn">Domi<span class="amp">&amp;</span>Luis</h1>
+    <p class="hd">03 · 10 · 2026</p>
+    <p class="hs">Finca Mexicana &nbsp;·&nbsp; Santiago Cuautlalpan, Estado de México</p>
+    <svg class="hc" viewBox="0 0 280 105" width="260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="gC" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C49030" stop-opacity=".55"/><stop offset="100%" stop-color="#C49030" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gL" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C45A1A" stop-opacity=".4"/><stop offset="100%" stop-color="#C45A1A" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gR" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6B7A42" stop-opacity=".4"/><stop offset="100%" stop-color="#6B7A42" stop-opacity="0"/></radialGradient>
+      </defs>
+      <g stroke="#C45A1A" stroke-width=".8" opacity=".4" fill="none">
+        <line x1="30" y1="48" x2="50" y2="26"/><line x1="30" y1="48" x2="14" y2="28"/><line x1="14" y1="28" x2="50" y2="26"/>
+        <line x1="30" y1="48" x2="20" y2="70"/><line x1="30" y1="48" x2="56" y2="74"/><line x1="56" y1="74" x2="20" y2="70"/>
+        <line x1="56" y1="74" x2="76" y2="54"/><line x1="76" y1="54" x2="140" y2="50" stroke-dasharray="3,5" opacity=".25"/>
+      </g>
+      <circle cx="30" cy="48" r="12" fill="url(#gL)" style="animation:glow 1.8s ease-in-out infinite .3s"/>
+      <circle cx="30" cy="48" r="3"   fill="#C45A1A" style="animation:tw-a 1.6s ease-in-out infinite 0s"/>
+      <circle cx="50" cy="26" r="2.5" fill="#C45A1A" style="animation:tw-a 2s ease-in-out infinite .5s"/>
+      <circle cx="14" cy="28" r="2"   fill="#C45A1A" style="animation:tw-b 1.4s ease-in-out infinite 1s"/>
+      <circle cx="20" cy="70" r="2"   fill="#C45A1A" style="animation:tw-b 1.8s ease-in-out infinite .7s"/>
+      <circle cx="56" cy="74" r="2.5" fill="#C45A1A" style="animation:tw-a 2.2s ease-in-out infinite 1.4s"/>
+      <circle cx="76" cy="54" r="1.8" fill="#C45A1A" style="animation:tw-b 1.5s ease-in-out infinite .2s"/>
+      <g stroke="#6B7A42" stroke-width=".8" opacity=".4" fill="none">
+        <line x1="250" y1="48" x2="230" y2="26"/><line x1="250" y1="48" x2="266" y2="28"/><line x1="266" y1="28" x2="230" y2="26"/>
+        <line x1="250" y1="48" x2="260" y2="70"/><line x1="250" y1="48" x2="224" y2="74"/><line x1="224" y1="74" x2="260" y2="70"/>
+        <line x1="224" y1="74" x2="204" y2="54"/><line x1="204" y1="54" x2="140" y2="50" stroke-dasharray="3,5" opacity=".25"/>
+      </g>
+      <circle cx="250" cy="48" r="12" fill="url(#gR)" style="animation:glow 2s ease-in-out infinite .6s"/>
+      <circle cx="250" cy="48" r="3"   fill="#6B7A42" style="animation:tw-a 1.9s ease-in-out infinite .2s"/>
+      <circle cx="230" cy="26" r="2.5" fill="#6B7A42" style="animation:tw-a 1.5s ease-in-out infinite .9s"/>
+      <circle cx="266" cy="28" r="2"   fill="#6B7A42" style="animation:tw-b 2.1s ease-in-out infinite .4s"/>
+      <circle cx="260" cy="70" r="2"   fill="#6B7A42" style="animation:tw-b 1.6s ease-in-out infinite 1.2s"/>
+      <circle cx="224" cy="74" r="2.5" fill="#6B7A42" style="animation:tw-a 2.3s ease-in-out infinite .6s"/>
+      <circle cx="204" cy="54" r="1.8" fill="#6B7A42" style="animation:tw-b 1.8s ease-in-out infinite 1.6s"/>
+      <circle cx="140" cy="50" r="18" fill="url(#gC)" style="animation:glow 2s ease-in-out infinite 0s"/>
+      <polygon points="140,42 141.5,48.5 148,50 141.5,51.5 140,58 138.5,51.5 132,50 138.5,48.5" fill="#C49030" opacity=".95" style="animation:spin-s 2.5s ease-in-out infinite 0s"/>
+      <circle cx="140" cy="50" r="2.2" fill="#F7EDD8" opacity=".95"/>
+    </svg>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="sha"></div></div>
+
+  <!-- Mobile: 2 photos -->
+  <div class="photo-strip">
+    <div class="strip-inner">
+      <div class="pol-s" style="transform:rotate(-3deg)">
+        <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0045_lzxm0x.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+      </div>
+      <div class="pol-s" style="transform:rotate(2deg)">
+        <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0047_u6wgnm.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave dark→cream -->
+<div class="wave" style="background:linear-gradient(160deg,#1A0E06,#0C1408)">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" height="90"><path d="M0,0 C360,90 1080,0 1440,70 L1440,90 L0,90 Z" fill="#F7EDD8"/></svg>
+</div>
+
+<!-- ════ CELEBRACIÓN (CREAM) ════ -->
+<section id="celebracion">
+  <div class="pol" style="width:155px;left:2%;top:18%;transform:rotate(4deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0047_u6wgnm.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="pol" style="width:145px;right:2%;bottom:22%;transform:rotate(-5deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0046_gku3jt.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <!-- LIGHT-SECTION STARS: dark terracota/sage dots that contrast against cream -->
+  <div class="cl cl-lt">
+    <!-- Scattered dot-stars, dark-on-light -->
+    <svg width="100%" height="100%" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Top area stars -->
+      <circle cx="80"   cy="55"  r="1.6" fill="rgba(139,50,16,.38)"  style="animation:tw-lt-a 2s ease-in-out infinite .3s"/>
+      <circle cx="160"  cy="30"  r="1.1" fill="rgba(107,122,66,.32)"  style="animation:tw-lt-b 2.3s ease-in-out infinite .9s"/>
+      <circle cx="280"  cy="70"  r="1.3" fill="rgba(139,50,16,.3)"    style="animation:tw-lt-a 1.8s ease-in-out infinite 1.4s"/>
+      <circle cx="420"  cy="40"  r=".9"  fill="rgba(107,122,66,.28)"  style="animation:tw-lt-c 2.5s ease-in-out infinite .6s"/>
+      <circle cx="600"  cy="25"  r="1.2" fill="rgba(139,50,16,.32)"   style="animation:tw-lt-b 2.1s ease-in-out infinite 1.1s"/>
+      <circle cx="780"  cy="55"  r="1"   fill="rgba(107,122,66,.28)"  style="animation:tw-lt-a 2.4s ease-in-out infinite .4s"/>
+      <circle cx="920"  cy="35"  r="1.4" fill="rgba(139,50,16,.35)"   style="animation:tw-lt-b 1.9s ease-in-out infinite 1.7s"/>
+      <circle cx="1060" cy="60"  r="1.1" fill="rgba(107,122,66,.3)"   style="animation:tw-lt-a 2.2s ease-in-out infinite .8s"/>
+      <circle cx="1150" cy="30"  r="1.3" fill="rgba(139,50,16,.32)"   style="animation:tw-lt-c 2.6s ease-in-out infinite .2s"/>
+      <!-- Right-side cluster -->
+      <circle cx="1090" cy="150" r="1.5" fill="rgba(139,50,16,.4)"    style="animation:tw-lt-a 1.8s ease-in-out infinite .6s"/>
+      <circle cx="1130" cy="120" r="1.1" fill="rgba(107,122,66,.32)"  style="animation:tw-lt-b 2.4s ease-in-out infinite 1.2s"/>
+      <circle cx="1155" cy="170" r=".9"  fill="rgba(139,50,16,.28)"   style="animation:tw-lt-c 2s ease-in-out infinite 1.8s"/>
+      <!-- Left-side scattered -->
+      <circle cx="40"   cy="200" r="1.2" fill="rgba(107,122,66,.3)"   style="animation:tw-lt-b 2.1s ease-in-out infinite 1s"/>
+      <circle cx="70"   cy="150" r="1"   fill="rgba(139,50,16,.28)"   style="animation:tw-lt-a 2.5s ease-in-out infinite .5s"/>
+      <!-- Mid-section stars -->
+      <circle cx="55"   cy="400" r="1.3" fill="rgba(139,50,16,.32)"   style="animation:tw-lt-b 1.9s ease-in-out infinite 1.3s"/>
+      <circle cx="1140" cy="380" r="1.1" fill="rgba(107,122,66,.28)"  style="animation:tw-lt-a 2.3s ease-in-out infinite .7s"/>
+      <circle cx="30"   cy="550" r="1.4" fill="rgba(139,50,16,.35)"   style="animation:tw-lt-c 2s ease-in-out infinite 1.6s"/>
+      <circle cx="1160" cy="520" r="1.2" fill="rgba(107,122,66,.3)"   style="animation:tw-lt-b 2.6s ease-in-out infinite .3s"/>
+      <!-- Bottom area -->
+      <circle cx="100"  cy="640" r="1.3" fill="rgba(139,50,16,.3)"    style="animation:tw-lt-a 2.2s ease-in-out infinite .9s"/>
+      <circle cx="500"  cy="660" r="1"   fill="rgba(107,122,66,.25)"  style="animation:tw-lt-b 2s ease-in-out infinite 1.5s"/>
+      <circle cx="900"  cy="650" r="1.2" fill="rgba(139,50,16,.28)"   style="animation:tw-lt-a 1.8s ease-in-out infinite .4s"/>
+      <circle cx="1100" cy="640" r="1"   fill="rgba(107,122,66,.25)"  style="animation:tw-lt-c 2.4s ease-in-out infinite 1s"/>
+      <!-- 4-point stars -->
+      <polygon points="200,90 201.2,95.5 207,96.8 201.2,98.1 200,103.5 198.8,98.1 193,96.8 198.8,95.5" fill="rgba(139,50,16,.32)" style="animation:spin-s 6s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+      <polygon points="1000,80 1001.2,85.5 1007,86.8 1001.2,88.1 1000,93.5 998.8,88.1 993,86.8 998.8,85.5" fill="rgba(107,122,66,.28)" style="animation:spin-s 7s ease-in-out infinite .5s;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+    <!-- Constellation top-right: 5 stars -->
+    <svg width="200" height="190" style="right:2%;top:3%" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="rgba(139,50,16,.28)" stroke-width=".9" fill="none">
+        <line x1="170" y1="25"  x2="120" y2="58"/>
+        <line x1="120" y1="58"  x2="60"  y2="42"/>
+        <line x1="120" y1="58"  x2="130" y2="115"/>
+        <line x1="60"  y1="42"  x2="18"  y2="80"/>
+        <line x1="130" y1="115" x2="80"  y2="160"/>
+      </g>
+      <circle cx="170" cy="25"  r="2.4" fill="rgba(139,50,16,.45)"  style="animation:tw-lt-a 2s ease-in-out infinite .3s"/>
+      <circle cx="120" cy="58"  r="3.2" fill="rgba(139,50,16,.5)"   style="animation:tw-lt-a 1.7s ease-in-out infinite .8s"/>
+      <circle cx="60"  cy="42"  r="2"   fill="rgba(107,122,66,.4)"  style="animation:tw-lt-b 2.2s ease-in-out infinite 1.3s"/>
+      <circle cx="130" cy="115" r="1.8" fill="rgba(139,50,16,.38)"  style="animation:tw-lt-b 1.9s ease-in-out infinite .5s"/>
+      <circle cx="18"  cy="80"  r="1.7" fill="rgba(107,122,66,.35)" style="animation:tw-lt-a 2.4s ease-in-out infinite 1.7s"/>
+      <circle cx="80"  cy="160" r="1.6" fill="rgba(139,50,16,.35)"  style="animation:tw-lt-b 2.1s ease-in-out infinite .2s"/>
+    </svg>
+    <!-- Small crescent, bottom-left -->
+    <svg width="80" height="80" style="left:3%;bottom:6%" xmlns="http://www.w3.org/2000/svg">
+      <defs><mask id="cMC2"><circle cx="40" cy="40" r="26" fill="white"/><circle cx="53" cy="38" r="23" fill="black"/></mask></defs>
+      <circle cx="40" cy="40" r="26" fill="rgba(139,50,16,.14)" mask="url(#cMC2)"/>
+      <circle cx="40" cy="40" r="26" fill="none" stroke="rgba(139,50,16,.32)" stroke-width=".9" mask="url(#cMC2)"/>
+    </svg>
+  </div>
+
+  <div class="si pb">
+    <p class="lbl lt rv">La celebración</p>
+    <h2 class="ttl lt rv d1">Nos casamos aquí</h2>
+    <div class="gd rv d2"><div class="gl"></div><div class="gdd"></div><div class="gdm"></div><div class="gdd"></div><div class="gl r"></div></div>
+    <div class="ec rv d2">
+      <div class="ecard"><span class="ei">⛪</span><div class="et">Ceremonia</div><div class="etime">5:00</div><div class="eap">PM</div></div>
+      <div class="ecard"><span class="ei">🥂</span><div class="et">Recepción</div><div class="etime">7:00</div><div class="eap">PM</div></div>
+    </div>
+    <div class="vi rv d3">
+      <div class="vn">Finca Mexicana</div>
+      <div class="va">Manzana 003, Santiago Cuautlalpan<br>Estado de México, 54650</div>
+      <a class="mb" href="https://maps.google.com/?q=Finca+Mexicana+Santiago+Cuautlalpan+Mexico" target="_blank">📍 &nbsp;Cómo llegar</a>
+    </div>
+    <div class="me rv d4">
+      <iframe src="https://maps.google.com/maps?q=Santiago+Cuautlalpan+Estado+de+Mexico+54650&output=embed&hl=es&z=13" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <!-- Mobile: 2 photos -->
+    <div class="photo-strip">
+      <div class="strip-inner">
+        <div class="pol-s" style="transform:rotate(3deg)">
+          <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0046_gku3jt.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+        </div>
+        <div class="pol-s" style="transform:rotate(-2deg)">
+          <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0049_c3uiwa.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave cream→dark -->
+<div class="wave" style="background:#EDD4A0">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" height="90">
+    <path d="M0,90 C400,0 1040,90 1440,20 L1440,0 L0,0 Z" fill="#EDD4A0"/>
+    <path d="M0,90 C400,0 1040,90 1440,20 L1440,90 L0,90 Z" fill="#0E0906"/>
+  </svg>
+</div>
+
+<!-- ════ ITINERARIO (DARK) ════ -->
+<section id="itinerario">
+  <div class="pol" style="width:150px;right:2%;top:16%;transform:rotate(-4deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0049_c3uiwa.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="pol" style="width:142px;left:2%;bottom:18%;transform:rotate(6deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0053_all1qf.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="cl">
+    <!-- Large crescent bottom-left -->
+    <svg width="220" height="220" style="left:-2%;bottom:3%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mI" cx="38%" cy="38%" r="65%"><stop offset="0%" stop-color="#EDD4A0" stop-opacity=".7"/><stop offset="60%" stop-color="#C49030" stop-opacity=".4"/><stop offset="100%" stop-color="#5C2010" stop-opacity=".08"/></radialGradient>
+        <mask id="cMI"><circle cx="110" cy="110" r="82" fill="white"/><circle cx="148" cy="106" r="74" fill="black"/></mask>
+      </defs>
+      <circle cx="110" cy="110" r="105" fill="rgba(196,144,48,.04)"/>
+      <circle cx="110" cy="110" r="82"  fill="url(#mI)" mask="url(#cMI)" opacity=".45"/>
+      <circle cx="110" cy="110" r="82"  fill="none" stroke="rgba(196,144,48,.28)" stroke-width=".9" mask="url(#cMI)"/>
+    </svg>
+    <!-- Constellation top-right (bright, dark bg) -->
+    <svg width="210" height="190" style="right:2%;top:6%" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#C49030" stroke-width=".9" opacity=".3" fill="none">
+        <line x1="185" y1="22" x2="135" y2="55"/>
+        <line x1="135" y1="55" x2="75"  y2="38"/>
+        <line x1="135" y1="55" x2="145" y2="115"/>
+        <line x1="75"  y1="38" x2="25"  y2="72"/>
+        <line x1="145" y1="115" x2="95" y2="160"/>
+      </g>
+      <circle cx="185" cy="22"  r="2.2" fill="#C49030" style="animation:tw-a 1.9s ease-in-out infinite .3s"/>
+      <circle cx="135" cy="55"  r="3.1" fill="#C49030" style="animation:tw-a 1.6s ease-in-out infinite .8s"/>
+      <circle cx="75"  cy="38"  r="1.9" fill="#C45A1A" style="animation:tw-b 2.2s ease-in-out infinite 1.3s"/>
+      <circle cx="145" cy="115" r="1.7" fill="#C49030" style="animation:tw-b 1.8s ease-in-out infinite .5s"/>
+      <circle cx="25"  cy="72"  r="1.6" fill="#6B7A42" style="animation:tw-a 2.4s ease-in-out infinite 1.7s"/>
+      <circle cx="95"  cy="160" r="1.5" fill="#C49030" style="animation:tw-b 2.1s ease-in-out infinite .2s"/>
+    </svg>
+    <!-- Lone 4-pt star -->
+    <svg width="30" height="30" style="left:8%;top:20%" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="15,4 16.3,11.5 24,13 16.3,14.5 15,22 13.7,14.5 6,13 13.7,11.5" fill="#C49030" opacity=".45" style="animation:spin-s 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+  </div>
+  <div class="si pb">
+    <p class="lbl rv">El gran día</p>
+    <h2 class="ttl rv d1">Itinerario</h2>
+    <div class="gd dim rv d2" style="margin-bottom:48px"><div class="gl"></div><div class="gdd"></div><div class="gdm"></div><div class="gdd"></div><div class="gl r"></div></div>
+    <div class="tl rv d2">
+      <div class="tli"><div class="tld">⛪</div><div class="tlc"><div class="tlt">5:00 PM</div><div class="tle">Ceremonia</div><div class="tln">Finca Mexicana</div></div></div>
+      <div class="tli"><div class="tld">🥂</div><div class="tlc"><div class="tlt">~6:00 PM</div><div class="tle">Cóctel de bienvenida</div><div class="tln">Por confirmar</div></div></div>
+      <div class="tli"><div class="tld">🍽</div><div class="tlc"><div class="tlt">7:00 PM</div><div class="tle">Recepción & Cena</div><div class="tln">Finca Mexicana</div></div></div>
+      <div class="tli"><div class="tld">🎶</div><div class="tlc"><div class="tlt">~8:00 PM</div><div class="tle">Música & Baile</div><div class="tln">Por confirmar</div></div></div>
+    </div>
+
+    <!-- Mobile: 2 photos -->
+    <div class="photo-strip">
+      <div class="strip-inner">
+        <div class="pol-s" style="transform:rotate(-3deg)">
+          <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0048_fq11jm.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+        </div>
+        <div class="pol-s" style="transform:rotate(2deg)">
+          <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0053_all1qf.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave dark→warm -->
+<div class="wave" style="background:#0C1408">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" height="90"><path d="M0,0 C360,90 1080,0 1440,70 L1440,90 L0,90 Z" fill="#EDD4A0"/></svg>
+</div>
+
+<!-- ════ VESTIMENTA (WARM) ════ -->
+<section id="vestimenta">
+  <div class="pol" style="width:148px;left:2%;top:20%;transform:rotate(-5deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0052_rexmyw.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="pol" style="width:155px;right:2%;bottom:20%;transform:rotate(4deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0050_gyab3e.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="cl cl-lt">
+    <svg width="100%" height="100%" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="55"   cy="45"  r="1.5" fill="rgba(139,50,16,.38)"  style="animation:tw-lt-a 2s ease-in-out infinite .4s"/>
+      <circle cx="140"  cy="25"  r="1.1" fill="rgba(107,122,66,.32)"  style="animation:tw-lt-b 2.3s ease-in-out infinite 1s"/>
+      <circle cx="300"  cy="55"  r="1.3" fill="rgba(139,50,16,.3)"    style="animation:tw-lt-a 1.8s ease-in-out infinite .7s"/>
+      <circle cx="550"  cy="30"  r="1"   fill="rgba(107,122,66,.28)"  style="animation:tw-lt-c 2.5s ease-in-out infinite 1.5s"/>
+      <circle cx="800"  cy="50"  r="1.2" fill="rgba(139,50,16,.32)"   style="animation:tw-lt-b 2.1s ease-in-out infinite .2s"/>
+      <circle cx="1000" cy="35"  r="1.4" fill="rgba(107,122,66,.3)"   style="animation:tw-lt-a 2.4s ease-in-out infinite 1.3s"/>
+      <circle cx="1150" cy="55"  r="1.1" fill="rgba(139,50,16,.35)"   style="animation:tw-lt-b 1.9s ease-in-out infinite .6s"/>
+      <circle cx="45"   cy="430" r="1.3" fill="rgba(107,122,66,.28)"  style="animation:tw-lt-a 2.2s ease-in-out infinite .9s"/>
+      <circle cx="1155" cy="410" r="1.2" fill="rgba(139,50,16,.3)"    style="animation:tw-lt-c 2.6s ease-in-out infinite 1.7s"/>
+      <polygon points="1100,80 1101.3,87 1108.5,88.4 1101.3,89.8 1100,96.8 1098.7,89.8 1091.5,88.4 1098.7,87" fill="rgba(139,50,16,.3)" style="animation:spin-s 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+      <polygon points="80,400 81.2,406.5 88,407.8 81.2,409.1 80,415.5 78.8,409.1 72,407.8 78.8,406.5" fill="rgba(107,122,66,.27)" style="animation:spin-s 8s ease-in-out infinite .8s;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+    <!-- Crescent top-right -->
+    <svg width="90" height="90" style="right:3%;top:5%" xmlns="http://www.w3.org/2000/svg">
+      <defs><mask id="cMVe"><circle cx="45" cy="45" r="30" fill="white"/><circle cx="59" cy="43" r="27" fill="black"/></mask></defs>
+      <circle cx="45" cy="45" r="30" fill="rgba(139,50,16,.12)" mask="url(#cMVe)"/>
+      <circle cx="45" cy="45" r="30" fill="none" stroke="rgba(139,50,16,.32)" stroke-width=".9" mask="url(#cMVe)"/>
+    </svg>
+    <!-- 4-star constellation bottom-left -->
+    <svg width="150" height="130" style="left:2%;bottom:8%" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="rgba(107,122,66,.28)" stroke-width=".8" fill="none">
+        <line x1="25" y1="100" x2="65" y2="70"/><line x1="65" y1="70" x2="110" y2="90"/><line x1="65" y1="70" x2="60" y2="25"/>
+      </g>
+      <circle cx="25"  cy="100" r="1.8" fill="rgba(107,122,66,.38)" style="animation:tw-lt-b 2.1s ease-in-out infinite .8s"/>
+      <circle cx="65"  cy="70"  r="2.5" fill="rgba(107,122,66,.45)" style="animation:tw-lt-a 1.8s ease-in-out infinite .3s"/>
+      <circle cx="110" cy="90"  r="1.6" fill="rgba(139,50,16,.35)"  style="animation:tw-lt-b 2.4s ease-in-out infinite 1.4s"/>
+      <circle cx="60"  cy="25"  r="1.5" fill="rgba(107,122,66,.32)" style="animation:tw-lt-a 2.2s ease-in-out infinite .6s"/>
+    </svg>
+  </div>
+  <div class="si pb">
+    <p class="lbl lt rv">Cómo venir</p>
+    <h2 class="ttl lt rv d1">Código de vestimenta</h2>
+    <div class="gd rv d2"><div class="gl"></div><div class="gdd"></div><div class="gdm"></div><div class="gdd"></div><div class="gl r"></div></div>
+    <div class="db rv d2">Formal · Etiqueta</div>
+    <p class="bod lt plain rv d3">Te invitamos a vestir a la altura de esta celebración.<br>Caballeros: traje oscuro o smoking. Damas: vestido de gala o de noche.</p>
+    <div class="pr rv d3">
+      <div class="ps" style="background:#E8C89A"></div><div class="ps" style="background:#C45A1A"></div>
+      <div class="ps" style="background:#7A2E10"></div><div class="ps" style="background:#6B7A42"></div>
+      <div class="ps" style="background:#243D1E"></div>
+    </div>
+    <p class="pn rv d4">Paleta de color de la boda · como referencia</p>
+
+    <!-- Mobile: 1 photo -->
+    <div class="photo-strip">
+      <div class="strip-inner" style="justify-content:center">
+        <div class="pol-s" style="transform:rotate(-2deg)">
+          <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0052_rexmyw.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave warm→cream -->
+<div class="wave" style="background:#F0E2C0">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" height="70">
+    <path d="M0,70 C480,0 960,70 1440,20 L1440,0 L0,0 Z" fill="#F0E2C0"/>
+    <path d="M0,70 C480,0 960,70 1440,20 L1440,70 Z" fill="#F7EDD8"/>
+  </svg>
+</div>
+
+<!-- ════ ALOJAMIENTO (CREAM) ════ -->
+<section id="alojamiento">
+  <div class="pol" style="width:152px;right:3%;top:22%;transform:rotate(-6deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0051_vcc3en.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="cl cl-lt">
+    <svg width="100%" height="100%" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60"   cy="50"  r="1.3" fill="rgba(139,50,16,.35)"  style="animation:tw-lt-a 2s ease-in-out infinite .5s"/>
+      <circle cx="200"  cy="30"  r="1"   fill="rgba(107,122,66,.3)"   style="animation:tw-lt-b 2.3s ease-in-out infinite 1.1s"/>
+      <circle cx="900"  cy="45"  r="1.2" fill="rgba(139,50,16,.3)"    style="animation:tw-lt-a 1.9s ease-in-out infinite .3s"/>
+      <circle cx="1100" cy="60"  r="1.4" fill="rgba(107,122,66,.32)"  style="animation:tw-lt-b 2.1s ease-in-out infinite 1.6s"/>
+      <circle cx="1160" cy="30"  r="1.1" fill="rgba(139,50,16,.28)"   style="animation:tw-lt-c 2.5s ease-in-out infinite .8s"/>
+      <circle cx="50"   cy="340" r="1.2" fill="rgba(107,122,66,.28)"  style="animation:tw-lt-a 2.2s ease-in-out infinite 1.4s"/>
+      <circle cx="1150" cy="330" r="1.1" fill="rgba(139,50,16,.3)"    style="animation:tw-lt-b 1.8s ease-in-out infinite .4s"/>
+    </svg>
+    <!-- 3-star constellation, right -->
+    <svg width="140" height="120" style="right:3%;top:10%" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="rgba(107,122,66,.28)" stroke-width=".8" fill="none">
+        <line x1="110" y1="25" x2="70" y2="60"/><line x1="70" y1="60" x2="25" y2="45"/><line x1="70" y1="60" x2="75" y2="100"/>
+      </g>
+      <circle cx="110" cy="25"  r="2"   fill="rgba(107,122,66,.42)" style="animation:tw-lt-a 2s ease-in-out infinite .4s"/>
+      <circle cx="70"  cy="60"  r="2.8" fill="rgba(107,122,66,.48)" style="animation:tw-lt-a 1.7s ease-in-out infinite .9s"/>
+      <circle cx="25"  cy="45"  r="1.7" fill="rgba(139,50,16,.38)"  style="animation:tw-lt-b 2.2s ease-in-out infinite 1.3s"/>
+      <circle cx="75"  cy="100" r="1.5" fill="rgba(107,122,66,.35)" style="animation:tw-lt-b 2s ease-in-out infinite .6s"/>
+    </svg>
+  </div>
+  <div class="si pb">
+    <p class="lbl lt rv">Para los que vienen de lejos</p>
+    <h2 class="ttl lt rv d1">Alojamiento</h2>
+    <div class="gd rv d2"><div class="gl"></div><div class="gdd"></div><div class="gdm"></div><div class="gdd"></div><div class="gl r"></div></div>
+    <div class="pc rv d2"><p>Próximamente compartiremos opciones de hospedaje para que tu visita sea más cómoda.</p><small>· Información disponible pronto ·</small></div>
+  </div>
+</section>
+
+<!-- wave cream→warm -->
+<div class="wave" style="background:#F7EDD8">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" height="70"><path d="M0,0 C500,70 940,0 1440,50 L1440,70 L0,70 Z" fill="#EDD4A0"/></svg>
+</div>
+
+<!-- ════ REGALOS (WARM) ════ -->
+<section id="regalos">
+  <div class="pol" style="width:150px;left:3%;top:25%;transform:rotate(5deg)">
+    <div class="pf"><img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0045_lzxm0x.jpg" alt="" loading="lazy"><div class="pcap"></div></div>
+  </div>
+  <div class="cl cl-lt">
+    <svg width="100%" height="100%" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="70"   cy="40"  r="1.3" fill="rgba(139,50,16,.35)"  style="animation:tw-lt-a 2.1s ease-in-out infinite .6s"/>
+      <circle cx="250"  cy="60"  r="1.1" fill="rgba(107,122,66,.3)"   style="animation:tw-lt-b 1.9s ease-in-out infinite 1.2s"/>
+      <circle cx="1050" cy="45"  r="1.3" fill="rgba(139,50,16,.32)"   style="animation:tw-lt-a 2.3s ease-in-out infinite .4s"/>
+      <circle cx="1140" cy="65"  r="1.1" fill="rgba(107,122,66,.28)"  style="animation:tw-lt-b 2s ease-in-out infinite 1.7s"/>
+      <circle cx="50"   cy="340" r="1.2" fill="rgba(107,122,66,.28)"  style="animation:tw-lt-c 2.4s ease-in-out infinite .9s"/>
+      <circle cx="1155" cy="320" r="1.1" fill="rgba(139,50,16,.28)"   style="animation:tw-lt-a 1.8s ease-in-out infinite 1.5s"/>
+      <polygon points="600,50 601.3,57 608.5,58.4 601.3,59.8 600,66.8 598.7,59.8 591.5,58.4 598.7,57" fill="rgba(139,50,16,.3)" style="animation:spin-s 7s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+  </div>
+  <div class="si pb">
+    <p class="lbl lt rv">Mesa de regalos</p>
+    <h2 class="ttl lt rv d1">El mejor regalo eres tú</h2>
+    <p class="bod lt rv d2">Tu presencia es el regalo más grande que podemos recibir.<br>Si deseas hacernos un obsequio, pronto compartiremos los detalles.</p>
+    <div class="pc rv d3"><p>Detalles de mesa de regalos próximamente.</p><small>· Información disponible pronto ·</small></div>
+  </div>
+</section>
+
+<!-- wave warm→dark -->
+<div class="wave" style="background:linear-gradient(170deg,#EDD4A0,#F0E2C0)">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" height="90">
+    <path d="M0,90 C360,0 1080,90 1440,20 L1440,0 L0,0 Z" fill="#F0E2C0"/>
+    <path d="M0,90 C360,0 1080,90 1440,20 L1440,90 L0,90 Z" fill="#0E0906"/>
+  </svg>
+</div>
+
+<!-- ════ RSVP (DARK) ════ -->
+<section id="rsvp">
+  <!-- Proposal photo: special larger polaroid, left side -->
+  <div class="pol proposal" style="width:195px;left:2%;top:50%;transform:translateY(-50%) rotate(-4deg)">
+    <div class="pf">
+      <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0054_bou7oi.jpg" alt="La propuesta" loading="lazy">
+      <div class="pcap">♡ La propuesta</div>
+    </div>
+  </div>
+  <div class="cl">
+    <!-- Waning moon right -->
+    <svg width="210" height="210" style="right:2%;top:8%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mR" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#EDD4A0" stop-opacity=".9"/><stop offset="55%" stop-color="#C49030" stop-opacity=".55"/><stop offset="100%" stop-color="#5C2010" stop-opacity=".1"/></radialGradient>
+        <mask id="cMR"><circle cx="105" cy="105" r="65" fill="white"/><circle cx="136" cy="101" r="59" fill="black"/></mask>
+      </defs>
+      <g style="animation:float-m 8s ease-in-out infinite .5s">
+        <circle cx="105" cy="105" r="92"  fill="rgba(196,144,48,.04)"/>
+        <circle cx="105" cy="105" r="75"  fill="rgba(196,144,48,.06)"/>
+        <circle cx="105" cy="105" r="65"  fill="url(#mR)" mask="url(#cMR)"/>
+        <circle cx="105" cy="105" r="65"  fill="none" stroke="rgba(196,144,48,.33)" stroke-width="1" mask="url(#cMR)"/>
+        <circle cx="42"  cy="55"  r="1.3" fill="#C49030" style="animation:tw-a 1.9s ease-in-out infinite .3s"/>
+        <circle cx="170" cy="62"  r="1.1" fill="#C49030" style="animation:tw-b 2.2s ease-in-out infinite .8s"/>
+      </g>
+    </svg>
+    <!-- Constellation left -->
+    <svg width="230" height="250" style="left:2%;top:10%" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#6B7A42" stroke-width=".9" opacity=".3" fill="none">
+        <line x1="30"  y1="178" x2="75"  y2="140"/>
+        <line x1="75"  y1="140" x2="135" y2="160"/>
+        <line x1="75"  y1="140" x2="85"  y2="88"/>
+        <line x1="85"  y1="88"  x2="145" y2="56"/>
+        <line x1="145" y1="56"  x2="192" y2="82"/>
+        <line x1="145" y1="56"  x2="152" y2="14"/>
+      </g>
+      <circle cx="30"  cy="178" r="1.7" fill="#6B7A42" style="animation:tw-b 2s ease-in-out infinite .4s"/>
+      <circle cx="75"  cy="140" r="2.8" fill="#C49030" style="animation:tw-a 1.7s ease-in-out infinite .9s"/>
+      <circle cx="135" cy="160" r="1.6" fill="#6B7A42" style="animation:tw-b 2.2s ease-in-out infinite 1.4s"/>
+      <circle cx="85"  cy="88"  r="1.9" fill="#C45A1A" style="animation:tw-a 1.9s ease-in-out infinite .6s"/>
+      <circle cx="145" cy="56"  r="2.4" fill="#C49030" style="animation:tw-a 1.6s ease-in-out infinite 1.1s"/>
+      <circle cx="192" cy="82"  r="1.5" fill="#6B7A42" style="animation:tw-b 2.4s ease-in-out infinite .2s"/>
+      <circle cx="152" cy="14"  r="1.7" fill="#C45A1A" style="animation:tw-b 2.1s ease-in-out infinite 1.7s"/>
+    </svg>
+    <!-- Lone 4-pt star -->
+    <svg width="28" height="28" style="right:18%;top:15%" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="14,3 15.3,10 22.5,11.4 15.3,12.8 14,19.8 12.7,12.8 5.5,11.4 12.7,10" fill="#C49030" opacity=".4" style="animation:spin-s 6s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+  </div>
+  <div class="si pb">
+    <p class="lbl rv">Cuéntanos si vienes</p>
+    <h2 class="ttl rv d1">Confirma tu asistencia</h2>
+    <div class="gd dim rv d2" style="margin-bottom:16px"><div class="gl"></div><div class="gdd"></div><div class="gdm"></div><div class="gdd"></div><div class="gl r"></div></div>
+    <p class="rdl rv d2">Confirma antes del 03 · Septiembre · 2026</p>
+    <p class="bod plain rv d3" style="color:#C8B890">Nos ayuda mucho saber con tiempo para que todo salga perfecto.</p>
+
+    <!-- Proposal photo — mobile: centered featured polaroid -->
+    <div class="photo-strip" style="justify-content:center">
+      <div class="strip-inner" style="justify-content:center">
+        <div class="pol-s proposal-s" style="transform:rotate(-2deg)">
+          <div class="pf">
+            <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0054_bou7oi.jpg" alt="La propuesta" loading="lazy">
+            <div class="pcap">♡ La propuesta</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fc rv d3">
+      <div class="fp">
+        <p>El formulario de confirmación estará disponible aquí.</p>
+        <p style="font-size:.78rem;margin-top:6px;font-family:'Jost',sans-serif;color:rgba(247,237,216,.25)">Crea el formulario en forms.google.com y conecta el iframe.</p>
+        <code>src="https://docs.google.com/forms/d/e/TU_ID/viewform?embedded=true"</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="cl" style="z-index:3">
+    <svg width="100%" height="100%" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#C49030" stroke-width=".7" opacity=".22" fill="none">
+        <line x1="80"  y1="80"  x2="130" y2="50"/><line x1="130" y1="50"  x2="190" y2="70"/>
+        <line x1="190" y1="70"  x2="165" y2="120"/><line x1="130" y1="50"  x2="140" y2="15"/>
+        <line x1="1120" y1="80" x2="1070" y2="50"/><line x1="1070" y1="50" x2="1010" y2="70"/>
+        <line x1="1010" y1="70" x2="1035" y2="120"/><line x1="1070" y1="50" x2="1060" y2="15"/>
+      </g>
+      <circle cx="80"   cy="80"  r="1.5" fill="#C45A1A" style="animation:tw-b 2s ease-in-out infinite .3s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="130"  cy="50"  r="2.3" fill="#C49030" style="animation:tw-a 1.7s ease-in-out infinite .8s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="190"  cy="70"  r="1.4" fill="#6B7A42" style="animation:tw-b 2.2s ease-in-out infinite 1.2s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="165"  cy="120" r="1.3" fill="#C49030" style="animation:tw-a 1.9s ease-in-out infinite .5s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="140"  cy="15"  r="1.6" fill="#C45A1A" style="animation:tw-b 2.4s ease-in-out infinite 1.6s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="1120" cy="80"  r="1.5" fill="#C45A1A" style="animation:tw-a 2.1s ease-in-out infinite .4s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="1070" cy="50"  r="2.3" fill="#C49030" style="animation:tw-b 1.8s ease-in-out infinite 1s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="1010" cy="70"  r="1.4" fill="#6B7A42" style="animation:tw-a 2.3s ease-in-out infinite .7s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="1035" cy="120" r="1.3" fill="#C49030" style="animation:tw-b 2s ease-in-out infinite 1.4s;transform-box:fill-box;transform-origin:center"/>
+      <circle cx="1060" cy="15"  r="1.6" fill="#C45A1A" style="animation:tw-a 1.6s ease-in-out infinite 1.9s;transform-box:fill-box;transform-origin:center"/>
+      <polygon points="600,90 601.5,97 608.5,98.5 601.5,100 600,107 598.5,100 591.5,98.5 598.5,97" fill="#C49030" opacity=".55" style="animation:spin-s 3.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+  </div>
+  <div class="fn">Domi &amp; Luis</div>
+  <div class="fd">03 · Octubre · 2026</div>
+</footer>
+
+<script>
+/* STARFIELD CANVAS — para secciones oscuras */
+(function(){
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+  const PAL = [
+    [196,144,48],[220,170,80],[196,90,26],
+    [247,220,160],[255,240,200],[107,122,66],[180,160,100],
+  ];
+  function rnd(a,b){return Math.random()*(b-a)+a}
+  function build(){
+    stars=[];
+    const n=Math.floor((W*H)/1800);
+    for(let i=0;i<n;i++){
+      const c=PAL[Math.floor(Math.random()*PAL.length)];
+      const s=Math.random();
+      stars.push({
+        x:rnd(0,W),y:rnd(0,H),
+        r:s<.70?rnd(.2,.8):s<.92?rnd(.8,1.6):rnd(1.6,2.6),
+        baseOp:rnd(.3,1),speed:rnd(.3,1.6),phase:rnd(0,Math.PI*2),color:c
+      });
+    }
+  }
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;build()}
+  function draw(ts){
+    ctx.clearRect(0,0,W,H);
+    const t=ts/1000;
+    for(const s of stars){
+      const op=s.baseOp*(.2+.8*(.5+.5*Math.sin(t*s.speed+s.phase)));
+      const[r,g,b]=s.color;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${r},${g},${b},${op})`;ctx.fill();
+      if(s.r>1.2){
+        const gr=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3.2);
+        gr.addColorStop(0,`rgba(${r},${g},${b},${op*.2})`);
+        gr.addColorStop(1,`rgba(${r},${g},${b},0)`);
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r*3.2,0,Math.PI*2);
+        ctx.fillStyle=gr;ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+
+/* NAV + REVEAL */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target)}}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
