@@ -274,6 +274,129 @@ section{position:relative;z-index:2}  /* overflow:hidden removido — cortaba el
 .fp p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:rgba(247,237,216,.42);margin-bottom:10px}
 .fp code{font-family:monospace;font-size:.7rem;color:var(--gold);opacity:.55;display:block;margin-top:14px}
 
+/* ── RSVP FORM ── */
+.rsvp-form{
+  max-width:480px;margin:0 auto;
+  display:flex;flex-direction:column;gap:22px;
+  padding:8px 4px;
+}
+.rsvp-form .ff{display:flex;flex-direction:column;gap:8px;text-align:left}
+.rsvp-form .ff[hidden]{display:none}
+.rsvp-form .fl{
+  font-family:'Jost',sans-serif;
+  font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(196,144,48,.85);
+  padding-left:2px;
+}
+.rsvp-form .fi{
+  width:100%;
+  background:rgba(247,237,216,.04);
+  border:1px solid rgba(196,144,48,.28);
+  border-radius:2px;
+  padding:14px 16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;
+  color:#F2E4C4;
+  outline:none;
+  transition:border-color .25s ease,background .25s ease;
+  -webkit-appearance:none;appearance:none;
+}
+.rsvp-form .fi::placeholder{color:rgba(232,216,184,.32);font-style:italic}
+.rsvp-form .fi:focus{
+  border-color:var(--gold);
+  background:rgba(247,237,216,.07);
+}
+.rsvp-form .fi.err{border-color:#C45A1A;background:rgba(196,90,26,.07)}
+.rsvp-form .fe{
+  font-family:'Jost',sans-serif;font-size:.72rem;
+  color:#E89060;letter-spacing:.04em;
+  min-height:1em;padding-left:2px;
+  opacity:0;transition:opacity .2s ease;
+}
+.rsvp-form .fe.show{opacity:1}
+
+/* Select wrapper for custom chevron */
+.rsvp-form .fs-wrap{position:relative}
+.rsvp-form .fs{padding-right:42px;cursor:pointer}
+.rsvp-form .fs option{
+  background:#1A0E06;color:#F2E4C4;
+  font-family:'Cormorant Garamond',serif;
+}
+.rsvp-form .fs option:disabled{color:rgba(232,216,184,.32)}
+.rsvp-form .fs-chev{
+  position:absolute;right:16px;top:50%;
+  transform:translateY(-50%);
+  color:var(--gold);font-size:.85rem;
+  pointer-events:none;opacity:.7;
+}
+
+/* Submit button */
+.rsvp-btn{
+  margin-top:8px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--terra) 100%);
+  border:none;border-radius:2px;
+  padding:16px 28px;
+  font-family:'Jost',sans-serif;
+  font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;
+  color:#1A0E06;font-weight:500;
+  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:14px;
+  transition:transform .25s ease,box-shadow .25s ease,filter .25s ease;
+  box-shadow:0 4px 20px rgba(196,144,48,.18);
+  position:relative;overflow:hidden;
+}
+.rsvp-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(196,144,48,.32);
+  filter:brightness(1.05);
+}
+.rsvp-btn:active{transform:translateY(0)}
+.rsvp-btn:disabled{opacity:.6;cursor:wait;transform:none}
+.rsvp-btn-ic{font-size:1.05rem;transition:transform .25s ease}
+.rsvp-btn:hover .rsvp-btn-ic{transform:translateX(4px)}
+
+.rsvp-foot{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.88rem;color:rgba(232,216,184,.55);
+  margin-top:6px;text-align:center;line-height:1.5;
+}
+.rsvp-foot em{color:var(--gold);font-style:italic;font-weight:400}
+
+/* Success state */
+.rsvp-success{
+  text-align:center;padding:40px 24px;
+  animation:fadeUp .8s ease forwards;
+}
+.rsvp-success-ic{
+  font-size:2.4rem;color:var(--gold);
+  margin-bottom:18px;display:block;
+  font-family:'Cormorant Garamond',serif;
+}
+.rsvp-success h3{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.6rem;color:#F2E4C4;font-weight:300;
+  margin-bottom:14px;letter-spacing:.02em;
+}
+.rsvp-success p{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.02rem;color:rgba(232,216,184,.72);
+  line-height:1.65;max-width:380px;margin:0 auto 8px;
+}
+.rsvp-success small{
+  font-family:'Jost',sans-serif;font-size:.7rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(196,144,48,.55);
+  display:block;margin-top:18px;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  .rsvp-form{padding:0 2px}
+  .rsvp-form .fi{font-size:1rem;padding:13px 14px}
+  .rsvp-btn{padding:15px 22px;font-size:.72rem}
+}
+
 /* ── FOOTER ── */
 footer{background:var(--dark);padding:52px 24px 40px;text-align:center;position:relative;z-index:2;overflow:hidden}
 .fn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.1rem;font-weight:300;color:var(--gold);margin-bottom:8px;position:relative;z-index:4}
@@ -362,30 +485,34 @@ footer{background:var(--dark);padding:52px 24px 40px;text-align:center;position:
         <radialGradient id="gL" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C45A1A" stop-opacity=".4"/><stop offset="100%" stop-color="#C45A1A" stop-opacity="0"/></radialGradient>
         <radialGradient id="gR" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6B7A42" stop-opacity=".4"/><stop offset="100%" stop-color="#6B7A42" stop-opacity="0"/></radialGradient>
       </defs>
+      <!-- VIRGO (Domi — terracota): Zavijava, Zaniah, Porrima, Vindemiatrix, Auva, Heze, Spica -->
       <g stroke="#C45A1A" stroke-width=".8" opacity=".4" fill="none">
-        <line x1="30" y1="48" x2="50" y2="26"/><line x1="30" y1="48" x2="14" y2="28"/><line x1="14" y1="28" x2="50" y2="26"/>
-        <line x1="30" y1="48" x2="20" y2="70"/><line x1="30" y1="48" x2="56" y2="74"/><line x1="56" y1="74" x2="20" y2="70"/>
-        <line x1="56" y1="74" x2="76" y2="54"/><line x1="76" y1="54" x2="140" y2="50" stroke-dasharray="3,5" opacity=".25"/>
+        <line x1="14" y1="32" x2="28" y2="40"/><line x1="28" y1="40" x2="44" y2="52"/><line x1="44" y1="52" x2="38" y2="22"/>
+        <line x1="44" y1="52" x2="32" y2="68"/><line x1="44" y1="52" x2="60" y2="60"/><line x1="60" y1="60" x2="78" y2="72"/>
+        <line x1="32" y1="68" x2="60" y2="60"/><line x1="78" y1="72" x2="140" y2="50" stroke-dasharray="3,5" opacity=".25"/>
       </g>
-      <circle cx="30" cy="48" r="12" fill="url(#gL)" style="animation:glow 1.8s ease-in-out infinite .3s"/>
-      <circle cx="30" cy="48" r="3"   fill="#C45A1A" style="animation:tw-a 1.6s ease-in-out infinite 0s"/>
-      <circle cx="50" cy="26" r="2.5" fill="#C45A1A" style="animation:tw-a 2s ease-in-out infinite .5s"/>
-      <circle cx="14" cy="28" r="2"   fill="#C45A1A" style="animation:tw-b 1.4s ease-in-out infinite 1s"/>
-      <circle cx="20" cy="70" r="2"   fill="#C45A1A" style="animation:tw-b 1.8s ease-in-out infinite .7s"/>
-      <circle cx="56" cy="74" r="2.5" fill="#C45A1A" style="animation:tw-a 2.2s ease-in-out infinite 1.4s"/>
-      <circle cx="76" cy="54" r="1.8" fill="#C45A1A" style="animation:tw-b 1.5s ease-in-out infinite .2s"/>
+      <circle cx="78" cy="72" r="12" fill="url(#gL)" style="animation:glow 1.8s ease-in-out infinite .3s"/>
+      <circle cx="78" cy="72" r="3.2" fill="#C45A1A" style="animation:tw-a 1.6s ease-in-out infinite 0s"/>      <!-- Spica -->
+      <circle cx="44" cy="52" r="2.5" fill="#C45A1A" style="animation:tw-a 2s ease-in-out infinite .5s"/>      <!-- Porrima -->
+      <circle cx="38" cy="22" r="2.2" fill="#C45A1A" style="animation:tw-b 1.9s ease-in-out infinite 1.3s"/>    <!-- Vindemiatrix -->
+      <circle cx="60" cy="60" r="2.2" fill="#C45A1A" style="animation:tw-a 2.2s ease-in-out infinite 1.4s"/>    <!-- Heze -->
+      <circle cx="32" cy="68" r="2"   fill="#C45A1A" style="animation:tw-b 1.8s ease-in-out infinite .7s"/>    <!-- Auva -->
+      <circle cx="28" cy="40" r="1.8" fill="#C45A1A" style="animation:tw-b 1.4s ease-in-out infinite 1s"/>     <!-- Zaniah -->
+      <circle cx="14" cy="32" r="1.6" fill="#C45A1A" style="animation:tw-b 1.5s ease-in-out infinite .2s"/>    <!-- Zavijava -->
+      <!-- LEO (Luis — verde bosque): Regulus, Algieba, Adhafera, Ras Elased Australis, Zosma, Chertan, Denebola -->
       <g stroke="#6B7A42" stroke-width=".8" opacity=".4" fill="none">
-        <line x1="250" y1="48" x2="230" y2="26"/><line x1="250" y1="48" x2="266" y2="28"/><line x1="266" y1="28" x2="230" y2="26"/>
-        <line x1="250" y1="48" x2="260" y2="70"/><line x1="250" y1="48" x2="224" y2="74"/><line x1="224" y1="74" x2="260" y2="70"/>
-        <line x1="224" y1="74" x2="204" y2="54"/><line x1="204" y1="54" x2="140" y2="50" stroke-dasharray="3,5" opacity=".25"/>
+        <line x1="266" y1="18" x2="250" y2="22"/><line x1="250" y1="22" x2="236" y2="32"/><line x1="236" y1="32" x2="202" y2="52"/>
+        <line x1="202" y1="52" x2="240" y2="62"/><line x1="240" y1="62" x2="250" y2="42"/><line x1="250" y1="42" x2="236" y2="32"/>
+        <line x1="240" y1="62" x2="270" y2="68"/><line x1="202" y1="52" x2="140" y2="50" stroke-dasharray="3,5" opacity=".25"/>
       </g>
-      <circle cx="250" cy="48" r="12" fill="url(#gR)" style="animation:glow 2s ease-in-out infinite .6s"/>
-      <circle cx="250" cy="48" r="3"   fill="#6B7A42" style="animation:tw-a 1.9s ease-in-out infinite .2s"/>
-      <circle cx="230" cy="26" r="2.5" fill="#6B7A42" style="animation:tw-a 1.5s ease-in-out infinite .9s"/>
-      <circle cx="266" cy="28" r="2"   fill="#6B7A42" style="animation:tw-b 2.1s ease-in-out infinite .4s"/>
-      <circle cx="260" cy="70" r="2"   fill="#6B7A42" style="animation:tw-b 1.6s ease-in-out infinite 1.2s"/>
-      <circle cx="224" cy="74" r="2.5" fill="#6B7A42" style="animation:tw-a 2.3s ease-in-out infinite .6s"/>
-      <circle cx="204" cy="54" r="1.8" fill="#6B7A42" style="animation:tw-b 1.8s ease-in-out infinite 1.6s"/>
+      <circle cx="202" cy="52" r="12" fill="url(#gR)" style="animation:glow 2s ease-in-out infinite .6s"/>
+      <circle cx="202" cy="52" r="3.2" fill="#6B7A42" style="animation:tw-a 1.9s ease-in-out infinite .2s"/>    <!-- Regulus -->
+      <circle cx="236" cy="32" r="2.6" fill="#6B7A42" style="animation:tw-a 1.5s ease-in-out infinite .9s"/>    <!-- Algieba -->
+      <circle cx="270" cy="68" r="2.5" fill="#6B7A42" style="animation:tw-a 2.3s ease-in-out infinite .6s"/>    <!-- Denebola -->
+      <circle cx="250" cy="42" r="2.2" fill="#6B7A42" style="animation:tw-b 1.6s ease-in-out infinite 1.2s"/>   <!-- Zosma -->
+      <circle cx="240" cy="62" r="2"   fill="#6B7A42" style="animation:tw-b 2.1s ease-in-out infinite .4s"/>   <!-- Chertan -->
+      <circle cx="250" cy="22" r="1.8" fill="#6B7A42" style="animation:tw-b 1.7s ease-in-out infinite 1s"/>    <!-- Adhafera -->
+      <circle cx="266" cy="18" r="1.8" fill="#6B7A42" style="animation:tw-b 1.8s ease-in-out infinite 1.6s"/>  <!-- Ras Elased Australis -->
       <circle cx="140" cy="50" r="18" fill="url(#gC)" style="animation:glow 2s ease-in-out infinite 0s"/>
       <polygon points="140,42 141.5,48.5 148,50 141.5,51.5 140,58 138.5,51.5 132,50 138.5,48.5" fill="#C49030" opacity=".95" style="animation:spin-s 2.5s ease-in-out infinite 0s"/>
       <circle cx="140" cy="50" r="2.2" fill="#F7EDD8" opacity=".95"/>
@@ -795,13 +922,51 @@ footer{background:var(--dark);padding:52px 24px 40px;text-align:center;position:
         </div>
       </div>
     </div>
-    <div class="fc rv d3">
-      <div class="fp">
-        <p>El formulario de confirmación estará disponible aquí.</p>
-        <p style="font-size:.78rem;margin-top:6px;font-family:'Jost',sans-serif;color:rgba(247,237,216,.25)">Crea el formulario en forms.google.com y conecta el iframe.</p>
-        <code>src="https://docs.google.com/forms/d/e/TU_ID/viewform?embedded=true"</code>
+    <form id="rsvpForm" class="rsvp-form rv d3" novalidate>
+      <div class="ff">
+        <label for="rsvpName" class="fl">Tu nombre completo</label>
+        <input type="text" id="rsvpName" name="name" class="fi" autocomplete="name" placeholder="Ej. María González" required>
+        <span class="fe" id="errName"></span>
       </div>
-    </div>
+
+      <div class="ff">
+        <label for="rsvpAttend" class="fl">¿Asistirás?</label>
+        <div class="fs-wrap">
+          <select id="rsvpAttend" name="attend" class="fi fs" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="si">Sí, con todo el gusto</option>
+            <option value="no">Lamentablemente no podré asistir</option>
+            <option value="tal-vez">Aún no estoy seguro/a</option>
+          </select>
+          <span class="fs-chev">▾</span>
+        </div>
+        <span class="fe" id="errAttend"></span>
+      </div>
+
+      <div class="ff" id="plusOneBlock" hidden>
+        <label for="rsvpPlus" class="fl">¿Vienes con acompañante?</label>
+        <div class="fs-wrap">
+          <select id="rsvpPlus" name="plusone" class="fi fs">
+            <option value="solo">Asistiré solo/a</option>
+            <option value="acompanante">Con acompañante (+1)</option>
+          </select>
+          <span class="fs-chev">▾</span>
+        </div>
+      </div>
+
+      <div class="ff" id="plusOneNameBlock" hidden>
+        <label for="rsvpPlusName" class="fl">Nombre del acompañante</label>
+        <input type="text" id="rsvpPlusName" name="plusname" class="fi" autocomplete="off" placeholder="Nombre y apellido">
+        <span class="fe" id="errPlusName"></span>
+      </div>
+
+      <button type="submit" class="rsvp-btn">
+        <span class="rsvp-btn-txt">Enviar confirmación por WhatsApp</span>
+        <span class="rsvp-btn-ic" aria-hidden="true">→</span>
+      </button>
+
+      <p class="rsvp-foot">Tu confirmación llegará al equipo de <em>Meilé</em>, nuestras Wedding Planners.</p>
+    </form>
   </div>
 </section>
 
@@ -885,6 +1050,156 @@ const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target)}}),{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* ── RSVP FORM ── */
+(function(){
+  const PLANNERS = [
+    { name: 'Constanza', phone: '5215569096185' },
+    { name: 'Ximena',    phone: '5215513056051' }
+  ];
+
+  const form        = document.getElementById('rsvpForm');
+  if(!form) return;
+  const fName       = document.getElementById('rsvpName');
+  const fAttend     = document.getElementById('rsvpAttend');
+  const fPlus       = document.getElementById('rsvpPlus');
+  const fPlusName   = document.getElementById('rsvpPlusName');
+  const plusBlock   = document.getElementById('plusOneBlock');
+  const plusNameBlk = document.getElementById('plusOneNameBlock');
+  const errName     = document.getElementById('errName');
+  const errAttend   = document.getElementById('errAttend');
+  const errPlusName = document.getElementById('errPlusName');
+
+  // Show/hide +1 toggle based on attendance answer
+  fAttend.addEventListener('change', () => {
+    const showPlus = fAttend.value === 'si';
+    plusBlock.hidden = !showPlus;
+    if(!showPlus){
+      fPlus.value = 'solo';
+      plusNameBlk.hidden = true;
+      fPlusName.value = '';
+    }
+    clearErr(fAttend, errAttend);
+  });
+
+  // Show/hide companion name based on +1 selection
+  fPlus.addEventListener('change', () => {
+    plusNameBlk.hidden = fPlus.value !== 'acompanante';
+    if(plusNameBlk.hidden){ fPlusName.value=''; clearErr(fPlusName, errPlusName); }
+  });
+
+  // Clear errors as user types
+  [fName, fPlusName].forEach(inp => {
+    inp.addEventListener('input', () => {
+      const errEl = inp === fName ? errName : errPlusName;
+      clearErr(inp, errEl);
+    });
+  });
+
+  function setErr(inp, errEl, msg){
+    inp.classList.add('err');
+    errEl.textContent = msg;
+    errEl.classList.add('show');
+  }
+  function clearErr(inp, errEl){
+    inp.classList.remove('err');
+    errEl.textContent = '';
+    errEl.classList.remove('show');
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let valid = true;
+
+    const name = fName.value.trim();
+    if(name.length < 2){
+      setErr(fName, errName, 'Por favor escribe tu nombre completo.');
+      valid = false;
+    }
+
+    if(!fAttend.value){
+      setErr(fAttend, errAttend, 'Selecciona una opción.');
+      valid = false;
+    }
+
+    const wantsPlus = fAttend.value === 'si' && fPlus.value === 'acompanante';
+    if(wantsPlus){
+      const pn = fPlusName.value.trim();
+      if(pn.length < 2){
+        setErr(fPlusName, errPlusName, 'Escribe el nombre de tu acompañante.');
+        valid = false;
+      }
+    }
+
+    if(!valid){
+      // Focus first error
+      const firstErr = form.querySelector('.fi.err');
+      if(firstErr) firstErr.focus();
+      return;
+    }
+
+    // Build message
+    const attendMap = {
+      'si':      '✓ Sí asistirá',
+      'no':      '✗ No podrá asistir',
+      'tal-vez': '? Aún no está seguro/a'
+    };
+    const attendTxt = attendMap[fAttend.value];
+
+    let companionLine = '';
+    if(fAttend.value === 'si'){
+      if(fPlus.value === 'acompanante'){
+        companionLine = `Acompañante: Con +1 — ${fPlusName.value.trim()}`;
+      } else {
+        companionLine = 'Acompañante: Asistirá solo/a';
+      }
+    }
+
+    const lines = [
+      '🤍 Confirmación de asistencia',
+      'Boda Domi & Luis · 03 · Octubre · 2026',
+      '',
+      `Invitado: ${name}`,
+      `Asistencia: ${attendTxt}`
+    ];
+    if(companionLine) lines.push(companionLine);
+    lines.push('', '— Enviado desde la invitación digital');
+
+    const message = encodeURIComponent(lines.join('\n'));
+
+    // Random 50/50 between planners
+    const planner = PLANNERS[Math.random() < 0.5 ? 0 : 1];
+    const url = `https://wa.me/${planner.phone}?text=${message}`;
+
+    // Disable button while opening
+    const btn = form.querySelector('.rsvp-btn');
+    btn.disabled = true;
+    btn.querySelector('.rsvp-btn-txt').textContent = 'Abriendo WhatsApp…';
+
+    // Open WhatsApp in new tab
+    window.open(url, '_blank', 'noopener,noreferrer');
+
+    // Replace form with success message after a brief moment
+    setTimeout(() => {
+      const wrap = form.parentElement;
+      form.style.display = 'none';
+      const success = document.createElement('div');
+      success.className = 'rsvp-success';
+      success.innerHTML = `
+        <span class="rsvp-success-ic">✦</span>
+        <h3>¡Gracias, ${escapeHtml(name.split(' ')[0])}!</h3>
+        <p>Si WhatsApp se abrió correctamente, solo presiona <strong>enviar</strong> para que tu confirmación llegue al equipo de Meilé.</p>
+        <p style="margin-top:14px">Si no se abrió, <a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline">toca aquí para reintentar</a>.</p>
+        <small>Domi &amp; Luis · 03 · 10 · 2026</small>
+      `;
+      wrap.appendChild(success);
+    }, 600);
+  });
+
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+})();
 </script>
 </body>
 </html>
