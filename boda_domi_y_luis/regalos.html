@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mesa de regalos · Domi & Luis</title>
+<meta name="description" content="Mesa de regalos para la luna de miel de Domi & Luis · 03 · Octubre · 2026">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='mg' cx='38%25' cy='38%25' r='65%25'%3E%3Cstop offset='0%25' stop-color='%23EDD4A0'/%3E%3Cstop offset='100%25' stop-color='%23C49030'/%3E%3C/radialGradient%3E%3Cmask id='mm'%3E%3Ccircle cx='16' cy='16' r='13' fill='white'/%3E%3Ccircle cx='22' cy='15' r='12' fill='black'/%3E%3C/mask%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='13' fill='url(%23mg)' mask='url(%23mm)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7EDD8; --linen:#F0E2C0; --warm:#EDD4A0;
+  --terra:#C45A1A; --sienna:#8B3210; --burg:#4A1A08;
+  --sage:#6B7A42;  --forest:#243D1E; --gold:#C49030;
+  --dark:#0E0906;  --dark2:#1A0E06; --dark3:#0C1408;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;font-weight:300;color:#F2E4C4;
+  background:linear-gradient(170deg,#0E0906 0%,#1A0E06 35%,#0C1408 70%,#0E0906 100%);
+  min-height:100vh;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:180px;pointer-events:none;z-index:998;opacity:.6}
+
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;transition:background .4s,box-shadow .4s}
+nav.scrolled{background:rgba(10,6,3,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(196,144,48,.15)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--gold)}
+.nav-back{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(247,237,216,.55);text-decoration:none;transition:color .2s;
+  display:inline-flex;align-items:center;gap:8px}
+.nav-back:hover{color:var(--gold)}
+.nav-back-ic{font-size:.95rem;transition:transform .2s}
+.nav-back:hover .nav-back-ic{transform:translateX(-3px)}
+@media(max-width:600px){
+  nav{padding:14px 18px}
+  .nav-logo{font-size:1.1rem}
+  .nav-back{font-size:.55rem;letter-spacing:.2em}
+}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .85s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.5s}
+.d5{transition-delay:.6s}.d6{transition-delay:.7s}
+
+/* ── HERO ── */
+.hero{position:relative;padding:120px 24px 60px;text-align:center;z-index:5}
+.hero-illu{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.hero-content{position:relative;z-index:5;max-width:720px;margin:0 auto}
+
+.lbl{font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.32em;
+  text-transform:uppercase;color:rgba(196,144,48,.85);margin-bottom:18px}
+.title{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(2.2rem,6vw,3.6rem);color:#F2E4C4;line-height:1.1;
+  letter-spacing:.01em;margin-bottom:22px}
+.title .amp{color:var(--gold);font-weight:300}
+.gd{display:flex;align-items:center;justify-content:center;gap:8px;margin:20px auto 28px;max-width:280px}
+.gl{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(196,144,48,.5),transparent)}
+.gl.r{background:linear-gradient(to left,transparent,rgba(196,144,48,.5),transparent)}
+.gdd{width:3px;height:3px;background:var(--gold);border-radius:50%}
+.gdm{width:5px;height:5px;background:var(--gold);border-radius:50%;opacity:.85}
+
+.sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;
+  color:var(--gold);margin-bottom:30px}
+
+.body-txt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.12rem;
+  line-height:1.78;color:#E8D8B8;max-width:540px;margin:0 auto 14px;padding:0 8px}
+
+/* ── POLAROIDS HERO ── */
+.pol{position:absolute;z-index:4;filter:drop-shadow(0 12px 28px rgba(0,0,0,.55))}
+.pol .pf{background:#F7EDD8;padding:10px 10px 32px;transform:rotate(0deg);position:relative}
+.pol .pf img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover}
+.pol .pcap{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.78rem;
+  color:var(--terra);text-align:center;letter-spacing:.05em;margin-top:6px}
+.pol.p1{width:140px;left:3%;top:18%;transform:rotate(-6deg)}
+.pol.p2{width:130px;right:4%;top:24%;transform:rotate(7deg)}
+@media(max-width:900px){.pol{display:none}}
+
+/* ── MOBILE PHOTO STRIP ── */
+.photo-strip{position:relative;z-index:5;width:100%;max-width:100vw;
+  padding:14px 0 28px;overflow:hidden}
+.strip-inner{display:flex;gap:14px;padding:8px 24px 12px;
+  overflow-x:scroll;overflow-y:visible;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x;
+  scrollbar-width:none}
+.strip-inner::-webkit-scrollbar{display:none}
+.pol-s{flex-shrink:0;width:155px;scroll-snap-align:center;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}
+.pol-s .pf{background:#F7EDD8;padding:9px 9px 24px}
+.pol-s .pf img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.pol-s .pcap{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.72rem;color:var(--terra);text-align:center;letter-spacing:.04em;margin-top:5px}
+.pol-s:nth-child(odd){transform:rotate(-3deg)}
+.pol-s:nth-child(even){transform:rotate(3deg)}
+@media(min-width:901px){.photo-strip{display:none}}
+
+/* ── GIFT GRID ── */
+.gifts-wrap{max-width:1080px;margin:0 auto;padding:30px 24px 80px;position:relative;z-index:5}
+.gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:28px}
+.gift{
+  position:relative;
+  display:block;text-decoration:none;color:inherit;
+  background:linear-gradient(160deg,rgba(247,237,216,.05) 0%,rgba(196,144,48,.03) 100%);
+  border:1px solid rgba(196,144,48,.22);
+  border-radius:2px;padding:28px 22px 26px;text-align:center;
+  transition:transform .35s cubic-bezier(.22,.61,.36,1),border-color .35s ease,box-shadow .35s ease,background .35s ease;
+  overflow:hidden;
+}
+.gift::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at top,rgba(196,144,48,.08),transparent 60%);
+  opacity:0;transition:opacity .4s ease;pointer-events:none;
+}
+.gift:hover{
+  transform:translateY(-6px);
+  border-color:rgba(196,144,48,.55);
+  box-shadow:0 14px 38px rgba(0,0,0,.45),0 0 0 1px rgba(196,144,48,.08);
+  background:linear-gradient(160deg,rgba(247,237,216,.08) 0%,rgba(196,144,48,.05) 100%);
+}
+.gift:hover::before{opacity:1}
+
+.gift-star{position:absolute;top:14px;right:16px;font-size:.85rem;color:var(--gold);opacity:.55}
+
+.gift-amount{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:6px;
+  letter-spacing:.01em;
+}
+.gift-amount .cur{font-size:1rem;vertical-align:.6em;margin-right:3px;opacity:.75}
+.gift-amount .mxn{font-size:.72rem;font-style:normal;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(196,144,48,.6);
+  font-family:'Jost',sans-serif;display:inline-block;margin-left:6px;vertical-align:.4em}
+
+.gift-desc{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
+  color:rgba(232,216,184,.78);line-height:1.5;margin:10px 0 22px;min-height:3em;
+}
+
+.gift-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:11px 22px;
+  background:transparent;
+  color:var(--gold);
+  border:1px solid rgba(196,144,48,.5);border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:.66rem;
+  letter-spacing:.24em;text-transform:uppercase;font-weight:500;
+  text-decoration:none;cursor:pointer;
+  transition:all .3s ease;
+}
+.gift:hover .gift-btn{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--terra) 100%);
+  color:#1A0E06;border-color:transparent;
+  box-shadow:0 4px 14px rgba(196,144,48,.3);
+}
+.gift-btn-ic{transition:transform .3s ease;font-size:.85rem}
+.gift:hover .gift-btn-ic{transform:translateX(3px)}
+
+/* ── CUSTOM AMOUNT CARD ── */
+.gift-custom{
+  margin-top:8px;padding:38px 32px;text-align:center;
+  background:linear-gradient(135deg,rgba(196,144,48,.08) 0%,rgba(196,90,26,.06) 100%);
+  border:1px solid rgba(196,144,48,.32);border-radius:2px;
+  position:relative;overflow:hidden;
+}
+.gift-custom::before{
+  content:'✦';position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  font-size:1.4rem;color:var(--gold);opacity:.5;
+}
+.gift-custom h3{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:1.7rem;color:#F2E4C4;margin:14px 0 8px;letter-spacing:.01em;
+}
+.gift-custom p{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;
+  color:rgba(232,216,184,.72);margin-bottom:22px;max-width:440px;
+  margin-left:auto;margin-right:auto;line-height:1.55;
+}
+.gift-custom-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:14px 30px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--terra) 100%);
+  color:#1A0E06;border:none;border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:.72rem;
+  letter-spacing:.24em;text-transform:uppercase;font-weight:500;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 4px 18px rgba(196,144,48,.22);
+  transition:transform .25s ease,box-shadow .25s ease,filter .25s ease;
+}
+.gift-custom-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(196,144,48,.35);
+  filter:brightness(1.05);
+}
+.gift-custom-btn-ic{font-size:.95rem;transition:transform .25s ease}
+.gift-custom-btn:hover .gift-custom-btn-ic{transform:translateX(4px)}
+
+/* ── INFO PANEL ── */
+.info{
+  max-width:680px;margin:60px auto 0;padding:30px 28px;
+  background:rgba(247,237,216,.025);
+  border-top:1px solid rgba(196,144,48,.18);
+  border-bottom:1px solid rgba(196,144,48,.18);
+  text-align:center;
+}
+.info-lbl{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.28em;
+  text-transform:uppercase;color:rgba(196,144,48,.7);margin-bottom:12px}
+.info p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
+  color:rgba(232,216,184,.78);line-height:1.7;margin-bottom:10px}
+.info p:last-child{margin-bottom:0}
+.info strong{color:var(--gold);font-weight:400;font-style:normal;
+  font-family:'Jost',sans-serif;font-size:.86rem;letter-spacing:.04em}
+.info-icons{display:flex;justify-content:center;align-items:center;gap:20px;
+  margin-top:18px;flex-wrap:wrap}
+.info-tag{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(247,237,216,.55);
+  display:inline-flex;align-items:center;gap:6px}
+.info-tag-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;opacity:.7}
+
+/* ── FOOTER ── */
+footer{padding:48px 24px 36px;text-align:center;position:relative;z-index:5;
+  border-top:1px solid rgba(196,144,48,.12);margin-top:40px}
+.fn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;
+  font-weight:300;color:var(--gold);margin-bottom:8px}
+.fd{font-size:.63rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(196,144,48,.45);margin-bottom:22px}
+.fl-link{font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(247,237,216,.55);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;transition:color .2s}
+.fl-link:hover{color:var(--gold)}
+
+/* ── ANIMATIONS ── */
+@keyframes tw-a{0%,100%{opacity:.3;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes tw-b{0%,100%{opacity:.45;transform:scale(.9)}50%{opacity:.9;transform:scale(1.1)}}
+@keyframes float-m{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes float-p{0%,100%{transform:translate(0,0)}50%{transform:translate(8px,-6px)}}
+@keyframes spin-s{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.12)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .gifts{grid-template-columns:repeat(2,1fr);gap:16px}
+  .gift{padding:24px 18px 22px}
+  .gift-amount{font-size:2rem}
+  .gift-desc{font-size:.95rem;min-height:auto}
+  .hero{padding:100px 18px 40px}
+}
+@media(max-width:520px){
+  .gifts{grid-template-columns:1fr;gap:14px}
+  .gift{padding:26px 24px 24px}
+  .gift-amount{font-size:2.3rem}
+  .gift-desc{min-height:auto;margin-bottom:18px}
+  .gift-custom{padding:32px 22px}
+  .gift-custom h3{font-size:1.45rem}
+  .info{padding:26px 20px}
+  .body-txt{font-size:1.05rem}
+}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav id="nav">
+  <a href="boda.html" class="nav-back"><span class="nav-back-ic">←</span>Volver a la invitación</a>
+  <div class="nav-logo">D & L</div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <!-- Floating illustration: moon + plane + stars -->
+  <div class="hero-illu">
+    <!-- Waning moon top right -->
+    <svg width="180" height="180" style="position:absolute;right:6%;top:14%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mR" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#EDD4A0" stop-opacity=".9"/>
+          <stop offset="55%" stop-color="#C49030" stop-opacity=".55"/>
+          <stop offset="100%" stop-color="#5C2010" stop-opacity=".1"/>
+        </radialGradient>
+        <mask id="cMR"><circle cx="90" cy="90" r="55" fill="white"/><circle cx="118" cy="86" r="50" fill="black"/></mask>
+      </defs>
+      <g style="animation:float-m 8s ease-in-out infinite .5s">
+        <circle cx="90" cy="90" r="78"  fill="rgba(196,144,48,.04)"/>
+        <circle cx="90" cy="90" r="64"  fill="rgba(196,144,48,.06)"/>
+        <circle cx="90" cy="90" r="55"  fill="url(#mR)" mask="url(#cMR)"/>
+        <circle cx="90" cy="90" r="55"  fill="none" stroke="rgba(196,144,48,.33)" stroke-width="1" mask="url(#cMR)"/>
+      </g>
+    </svg>
+
+    <!-- Plane with trail, left side -->
+    <svg width="260" height="160" style="position:absolute;left:5%;top:30%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 160">
+      <g style="animation:float-p 6s ease-in-out infinite 0s">
+        <!-- contrail (dashed arc) -->
+        <path d="M 10 130 Q 90 60, 200 50" stroke="rgba(196,144,48,.35)" stroke-width="1.2" stroke-dasharray="4,5" fill="none" stroke-linecap="round"/>
+        <path d="M 10 130 Q 90 60, 200 50" stroke="rgba(247,237,216,.15)" stroke-width="3" fill="none" stroke-linecap="round" opacity=".4"/>
+        <!-- plane silhouette, simple -->
+        <g transform="translate(195,42) rotate(-18)">
+          <path d="M -14 0 L 14 -2 L 18 0 L 14 2 Z" fill="#C49030"/>
+          <path d="M -2 -1 L -8 -7 L -10 -7 L -4 -1 Z" fill="#C49030"/>
+          <path d="M -2 1 L -8 7 L -10 7 L -4 1 Z" fill="#C49030"/>
+          <path d="M 8 -1 L 5 -4 L 6 -1 Z" fill="#C49030"/>
+          <path d="M 8 1 L 5 4 L 6 1 Z" fill="#C49030"/>
+        </g>
+      </g>
+    </svg>
+
+    <!-- Ambient stars sprinkled -->
+    <svg width="100%" height="100%" preserveAspectRatio="none" style="position:absolute;inset:0" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12%"  cy="18%" r="1.4" fill="#C49030" style="animation:tw-a 2.1s ease-in-out infinite .3s"/>
+      <circle cx="22%"  cy="9%"  r="1.1" fill="#C45A1A" style="animation:tw-b 1.8s ease-in-out infinite .9s"/>
+      <circle cx="48%"  cy="6%"  r="1.6" fill="#C49030" style="animation:tw-a 2.4s ease-in-out infinite 1.4s"/>
+      <circle cx="72%"  cy="11%" r="1.2" fill="#6B7A42" style="animation:tw-b 2s ease-in-out infinite .6s"/>
+      <circle cx="88%"  cy="45%" r="1.3" fill="#C49030" style="animation:tw-a 1.9s ease-in-out infinite 1.1s"/>
+      <circle cx="6%"   cy="58%" r="1.2" fill="#C45A1A" style="animation:tw-b 2.2s ease-in-out infinite .4s"/>
+      <circle cx="32%"  cy="72%" r="1.4" fill="#C49030" style="animation:tw-a 1.7s ease-in-out infinite 1.5s"/>
+      <circle cx="93%"  cy="78%" r="1.1" fill="#6B7A42" style="animation:tw-b 2.3s ease-in-out infinite .8s"/>
+      <!-- 4-pt star ornament -->
+      <polygon points="155,40 156.5,48 164,49.5 156.5,51 155,59 153.5,51 146,49.5 153.5,48"
+        fill="rgba(196,144,48,.45)" style="animation:spin-s 7s ease-in-out infinite;transform-box:fill-box;transform-origin:center"/>
+    </svg>
+  </div>
+
+  <!-- Hero polaroids (desktop only) -->
+  <div class="pol p1">
+    <div class="pf">
+      <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0046_gku3jt.jpg" alt="Viaje juntos" loading="lazy">
+      <div class="pcap">~ juntos ~</div>
+    </div>
+  </div>
+  <div class="pol p2">
+    <div class="pf">
+      <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0047_u6wgnm.jpg" alt="Aventura" loading="lazy">
+      <div class="pcap">~ aventura ~</div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <p class="lbl rv">Mesa de regalos</p>
+    <h1 class="title rv d1">Nuestra <em>luna</em> de miel</h1>
+    <div class="gd rv d2"><div class="gl"></div><div class="gdd"></div><div class="gdm"></div><div class="gdd"></div><div class="gl r"></div></div>
+    <p class="sub rv d2">La aventura que sigue</p>
+    <p class="body-txt rv d3">Si algo nos define como pareja es nuestro amor por viajar — Europa, Japón, cada rincón de México que hemos descubierto tomados de la mano. Para celebrar el inicio de esta nueva etapa, hemos preparado una pequeña mesa de regalos pensada en nuestra luna de miel.</p>
+    <p class="body-txt rv d4">Cada aporte, sin importar el monto, es un pedacito de aventura que llevaremos con nosotros. <em>Gracias por ser parte de nuestra historia.</em></p>
+  </div>
+
+  <!-- Mobile photo strip -->
+  <div class="photo-strip">
+    <div class="strip-inner">
+      <div class="pol-s"><div class="pf">
+        <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0046_gku3jt.jpg" alt="" loading="lazy">
+        <div class="pcap">~ juntos ~</div>
+      </div></div>
+      <div class="pol-s"><div class="pf">
+        <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561160/IMG-20260406-WA0047_u6wgnm.jpg" alt="" loading="lazy">
+        <div class="pcap">~ aventura ~</div>
+      </div></div>
+      <div class="pol-s"><div class="pf">
+        <img src="https://res.cloudinary.com/diobgaxfl/image/upload/q_auto/f_auto/v1775561159/IMG-20260406-WA0050_gyab3e.jpg" alt="" loading="lazy">
+        <div class="pcap">~ camino ~</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ GIFT GRID ════ -->
+<section class="gifts-wrap">
+  <div class="gifts">
+
+    <a href="https://mpago.la/2z5AFBt" target="_blank" rel="noopener noreferrer" class="gift rv d1">
+      <span class="gift-star">✦</span>
+      <div class="gift-amount"><span class="cur">$</span>500<span class="mxn">MXN</span></div>
+      <p class="gift-desc">Un pequeño souvenir de aquel lugar</p>
+      <span class="gift-btn">Aportar <span class="gift-btn-ic">→</span></span>
+    </a>
+
+    <a href="https://mpago.la/2zUToHp" target="_blank" rel="noopener noreferrer" class="gift rv d2">
+      <span class="gift-star">✦</span>
+      <div class="gift-amount"><span class="cur">$</span>750<span class="mxn">MXN</span></div>
+      <p class="gift-desc">Una postal y un café en una plaza nueva</p>
+      <span class="gift-btn">Aportar <span class="gift-btn-ic">→</span></span>
+    </a>
+
+    <a href="https://mpago.la/1Wm1XnB" target="_blank" rel="noopener noreferrer" class="gift rv d3">
+      <span class="gift-star">✦</span>
+      <div class="gift-amount"><span class="cur">$</span>1,000<span class="mxn">MXN</span></div>
+      <p class="gift-desc">Una cena con sabores que no olvidaremos</p>
+      <span class="gift-btn">Aportar <span class="gift-btn-ic">→</span></span>
+    </a>
+
+    <a href="https://mpago.la/1H6rvfa" target="_blank" rel="noopener noreferrer" class="gift rv d4">
+      <span class="gift-star">✦</span>
+      <div class="gift-amount"><span class="cur">$</span>1,500<span class="mxn">MXN</span></div>
+      <p class="gift-desc">Una excursión a algún rincón soñado</p>
+      <span class="gift-btn">Aportar <span class="gift-btn-ic">→</span></span>
+    </a>
+
+    <a href="https://mpago.la/1Lans8Y" target="_blank" rel="noopener noreferrer" class="gift rv d5">
+      <span class="gift-star">✦</span>
+      <div class="gift-amount"><span class="cur">$</span>2,000<span class="mxn">MXN</span></div>
+      <p class="gift-desc">Una noche en un hotel inolvidable</p>
+      <span class="gift-btn">Aportar <span class="gift-btn-ic">→</span></span>
+    </a>
+
+    <a href="https://mpago.la/1mFwxSB" target="_blank" rel="noopener noreferrer" class="gift rv d6">
+      <span class="gift-star">✦</span>
+      <div class="gift-amount"><span class="cur">$</span>3,000<span class="mxn">MXN</span></div>
+      <p class="gift-desc">Un día entero de aventura juntos</p>
+      <span class="gift-btn">Aportar <span class="gift-btn-ic">→</span></span>
+    </a>
+
+  </div>
+
+  <!-- Custom amount -->
+  <a href="https://link.mercadopago.com.mx/wilotours" target="_blank" rel="noopener noreferrer" class="gift-custom rv d4" style="display:block;text-decoration:none">
+    <h3>Otro monto</h3>
+    <p>El monto que tu corazón decida — cada gesto es un pedacito de nuestra aventura.</p>
+    <span class="gift-custom-btn">Aportar monto personalizado <span class="gift-custom-btn-ic">→</span></span>
+  </a>
+
+  <!-- Info panel -->
+  <div class="info rv d5">
+    <p class="info-lbl">Información de pago</p>
+    <p>Los aportes se gestionan a través de <strong>Wilo Tours</strong>, la agencia de viajes que está organizando nuestra luna de miel.</p>
+    <p style="font-size:.92rem">Pagos seguros vía Mercado Pago — acepta tarjeta de crédito, débito, SPEI y efectivo en tiendas.</p>
+    <div class="info-icons">
+      <span class="info-tag"><span class="info-tag-dot"></span>Wilo Tours</span>
+      <span class="info-tag"><span class="info-tag-dot"></span>Mercado Pago</span>
+      <span class="info-tag"><span class="info-tag-dot"></span>Pago seguro</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="fn">Domi & Luis</div>
+  <div class="fd">03 · Octubre · 2026</div>
+  <a href="boda.html" class="fl-link"><span>←</span> Volver a la invitación</a>
+</footer>
+
+<script>
+/* ── STARFIELD CANVAS ── */
+(() => {
+  const c = document.getElementById('starfield');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let stars = [];
+  const PAL = ['#C49030','#C45A1A','#F2E4C4','#6B7A42'];
+  function rnd(a,b){return Math.random()*(b-a)+a}
+  function resize(){
+    c.width = innerWidth;
+    c.height = innerHeight;
+    stars = [];
+    const count = Math.floor((innerWidth*innerHeight)/4500);
+    for(let i=0;i<count;i++){
+      const col = PAL[Math.floor(Math.random()*PAL.length)];
+      const sz = Math.random();
+      stars.push({
+        x: rnd(0,c.width),
+        y: rnd(0,c.height),
+        r: sz<.7 ? rnd(.4,1) : rnd(1,1.8),
+        col: col,
+        op: rnd(.2,.7),
+        sp: rnd(.005,.018),
+        ph: rnd(0,Math.PI*2)
+      });
+    }
+  }
+  window.addEventListener('resize', resize, {passive:true});
+  resize();
+  function loop(t){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s => {
+      const tw = Math.sin(t*s.sp + s.ph)*.4 + .6;
+      ctx.globalAlpha = s.op * tw;
+      ctx.fillStyle = s.col;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ── NAV + REVEAL ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+const obs = new IntersectionObserver(e => e.forEach(x => {
+  if(x.isIntersecting){ x.target.classList.add('vis'); obs.unobserve(x.target); }
+}), {threshold:.1});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+/* On load, immediately reveal hero elements above the fold */
+window.addEventListener('load', () => {
+  document.querySelectorAll('.hero .rv').forEach(el => el.classList.add('vis'));
+});
+</script>
+</body>
+</html>
